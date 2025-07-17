@@ -61,3 +61,10 @@
 Автоматическое повышение прав проверенным пользователям
 
 Гибкая система ролей на основе активности
+
+
+
+
+PS E:\sentinel\sentinel> node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+3496972287f5fd9070f585c635b148fb1089234f7a7f45089f85a5f57eb0f514
+PS E:\sentinel\sentinel> 

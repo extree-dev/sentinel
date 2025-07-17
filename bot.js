@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const { Client, GatewayIntentBits, Collection, REST, Routes, Events } = require('discord.js');
 const { connect } = require('./database/db');
 const fs = require('fs');
@@ -6,6 +7,7 @@ const logger = require('./utils/logger');
 const guildMemberAddEvent = require('./events/guildMemberAdd');
 const interactionCreate = require('./utils/interactionCreate');
 const setupVerification = require('./systems/verificationSystem');
+const { fork } = require('child_process'); // Добавляем fork
 
 const client = new Client({
     intents: [
@@ -17,10 +19,39 @@ const client = new Client({
     ]
 });
 
-// После создания клиента Discord, но до логина:
+const startWebServer = () => {
+    const webProcess = fork(path.join(__dirname, 'HTML', 'app.js'), {
+        stdio: 'inherit', // Перенаправляем вывод в консоль
+        env: process.env // Передаем переменные окружения
+    });
+
+    webProcess.on('error', (err) => {
+        logger.error('Ошибка веб-сервера:', err);
+    });
+
+    webProcess.on('exit', (code) => {
+        logger.log(`Веб-сервер завершился с кодом ${code}`);
+    });
+};
+
+// Основная инициализация
 (async () => {
-    await connect();
-    // Остальной код инициализации
+    try {
+        await connect();
+        startWebServer(); // Запускаем веб-сервер
+
+        // Инициализация бота
+        client.commands = new Collection();
+        loadEvents();
+        loadCommands();
+        await registerCommands();
+
+        await client.login(process.env.DISCORD_TOKEN);
+        logger.log('Бот и веб-сервер успешно запущены');
+    } catch (error) {
+        logger.error('Ошибка запуска:', error);
+        process.exit(1);
+    }
 })();
 
 client.on(Events.ClientReady, setupVerification);
@@ -56,9 +87,9 @@ const registerCommands = async () => {
         }
 
         const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
-        
+
         logger.log('Начинаю регистрацию команд...');
-        
+
         // Для тестирования - регистрируем только на одном сервере
         if (process.env.GUILD_ID) {
             await rest.put(
@@ -73,7 +104,7 @@ const registerCommands = async () => {
             );
             logger.log('Команды зарегистрированы глобально');
         }
-        
+
         logger.log(`Успешно зарегистрировано ${commands.length} команд!`);
     } catch (error) {
         logger.error('Ошибка регистрации команд:', error);
