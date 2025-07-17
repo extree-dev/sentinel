@@ -762,3 +762,4 @@
 [2025-07-17T14:20:34.494Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
 [2025-07-17T14:20:34.503Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
 [2025-07-17T14:20:34.574Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-17T14:21:06.148Z] LOG: Завершение работы бота... {}
