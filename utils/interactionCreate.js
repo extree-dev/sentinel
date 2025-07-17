@@ -1,34 +1,35 @@
 const { Events, MessageFlags } = require('discord.js');
-const TEMP_ROLE_ID = process.env.TEMP_ROLE_ID;
+const verificationHandler = require('./verificationHandler');
 
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
         if (!interaction.isButton()) return;
-        if (interaction.customId !== 'verify_user') return;
 
         try {
-            const role = interaction.guild.roles.cache.get(TEMP_ROLE_ID);
-            if (!role) throw new Error('Роль верификации не найдена!');
-
-            if (!interaction.member.roles.cache.has(role.id)) {
-                return interaction.reply({ 
-                    content: '-# У вас нет роли для верификации!', 
+            // Обработка запроса верификации от пользователя
+            if (interaction.customId === 'verify_user') {
+                await verificationHandler.handleVerificationRequest(interaction);
+            }
+            
+            // Обработка действий администратора
+            else if (interaction.customId.startsWith('verify_accept_') || 
+                     interaction.customId.startsWith('verify_reject_')) {
+                await verificationHandler.handleAdminVerification(interaction);
+            }
+        } catch (error) {
+            console.error('Ошибка обработки взаимодействия:', error);
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({ 
+                    content: 'Произошла ошибка при обработке запроса!', 
+                    flags: MessageFlags.Ephemeral
+                });
+            } else {
+                await interaction.reply({ 
+                    content: 'Произошла ошибка при обработке запроса!', 
                     flags: MessageFlags.Ephemeral
                 });
             }
-
-            await interaction.member.roles.remove(role);
-            await interaction.reply({ 
-                content: '-# Вы успешно верифицированы!', 
-                flags: MessageFlags.Ephemeral
-            });
-        } catch (error) {
-            console.error('Ошибка верификации:', error);
-            await interaction.reply({ 
-                content: 'Произошла ошибка при верификации!', 
-                ephemeral: true 
-            });
         }
     },
 };
