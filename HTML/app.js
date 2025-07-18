@@ -4,6 +4,7 @@ require('dotenv').config({
     override: true,
     debug: true
 });
+const { client } = require('../bot'); // Импортируем клиент
 const { pool,
     getWarningsFromDatabase,
     removeWarningFromDatabase } = require('./public/js/database');
@@ -12,7 +13,6 @@ const session = require('express-session');
 const passport = require('passport');
 const DiscordStrategy = require('passport-discord').Strategy;
 const axios = require('axios');
-const { Client, GatewayIntentBits } = require('discord.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -131,24 +131,142 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy', { 
+    res.render('privacy', {
         title: 'Политика конфиденциальности',
-        user: req.isAuthenticated() ? req.user : null 
+        user: req.isAuthenticated() ? req.user : null
     });
 });
 
 app.get('/terms', (req, res) => {
-    res.render('terms', { 
+    res.render('terms', {
         title: 'Пользовательское соглашение',
-        user: req.isAuthenticated() ? req.user : null 
+        user: req.isAuthenticated() ? req.user : null
     });
 });
 
 app.get('/cookies', (req, res) => {
-    res.render('cookies', { 
+    res.render('cookies', {
         title: 'Политика использования cookies',
-        user: req.isAuthenticated() ? req.user : null 
+        user: req.isAuthenticated() ? req.user : null
     });
+});
+
+app.get('/api/server-members', checkAuth, async (req, res) => {
+    try {
+        const guildId = process.env.DISCORD_GUILD_ID;
+        const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}/members?limit=1000`, {
+            headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
+        });
+
+        const members = response.data.map(member => ({
+            id: member.user.id,
+            username: member.user.username,
+            discriminator: member.user.discriminator,
+            avatar: member.user.avatar,
+            joined_at: member.joined_at
+        }));
+
+        res.json(members);
+    } catch (error) {
+        console.error('Error fetching members:', error);
+        res.status(500).json({ error: 'Failed to fetch members' });
+    }
+});
+
+app.get('/api/export-data', checkAuth, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM warns ORDER BY created_at DESC');
+
+        // Формируем CSV
+        let csv = 'User ID,Username,Moderator ID,Reason,Date\n';
+        result.rows.forEach(row => {
+            csv += `"${row.user_id}","${row.user_name}","${row.moderator_id}","${row.reason}","${row.created_at}"\n`;
+        });
+
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=warnings_export.csv');
+        res.send(csv);
+    } catch (error) {
+        console.error('Export error:', error);
+        res.status(500).send('Export failed');
+    }
+});
+
+// Маршрут для получения профиля пользователя
+app.get('/api/user-profile/:userId', checkAuth, async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Получаем базовую информацию о пользователе
+        const userResponse = await axios.get(`https://discord.com/api/v10/users/${userId}`, {
+            headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
+        });
+
+        // Получаем информацию о членстве в гильдии
+        const guildResponse = await axios.get(`https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${userId}`, {
+            headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
+        });
+
+        // Получаем информацию о ролях
+        const roles = await Promise.all(guildResponse.data.roles.map(async roleId => {
+            const roleResponse = await axios.get(`https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/roles/${roleId}`, {
+                headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
+            });
+            return roleResponse.data;
+        }));
+
+        // Получаем предупреждения из БД
+        const warnings = await pool.query(
+            'SELECT * FROM warns WHERE user_id = $1 ORDER BY created_at DESC',
+            [userId]
+        );
+
+        res.json({
+            ...userResponse.data,
+            joined_at: guildResponse.data.joined_at,
+            roles: roles,
+            warnings: warnings.rows
+        });
+    } catch (error) {
+        console.error('Error fetching user profile:', error);
+        res.status(500).json({ error: 'Failed to fetch user profile' });
+    }
+});
+
+app.get('/api/online-members', checkAuth, async (req, res) => {
+    try {
+        if (!client) {
+            return res.status(500).json({ error: 'Discord client not initialized' });
+        }
+
+        const guildId = process.env.DISCORD_GUILD_ID;
+        const guild = client.guilds.cache.get(guildId);
+        
+        if (!guild) {
+            return res.status(404).json({ error: 'Guild not found' });
+        }
+
+        // Загружаем всех участников с presence data
+        await guild.members.fetch({ withPresences: true });
+        
+        const onlineMembers = guild.members.cache
+            .filter(member => {
+                const status = member.presence?.status;
+                return status === 'online' || status === 'idle' || status === 'dnd';
+            })
+            .map(member => ({
+                id: member.user.id,
+                username: member.user.username,
+                avatar: member.user.avatar,
+                discriminator: member.user.discriminator,
+                status: member.presence?.status || 'offline'
+            }));
+
+        res.json(onlineMembers);
+    } catch (error) {
+        console.error('Error fetching online members:', error);
+        res.status(500).json({ error: 'Failed to fetch online members' });
+    }
 });
 
 app.post('/add-warning', checkAuth, async (req, res) => {
