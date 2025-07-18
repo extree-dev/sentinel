@@ -7,13 +7,28 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="login-container">
-        <h1>Sentinel Mod Panel</h1>
-        <p>Пожалуйста, войдите в свою учетную запись Discord.</p>
-        <a href="/login" class="discord-login-btn">
-            <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo">
-            Login with Discord
-        </a>
+    <div class="page-wrapper">
+        <div class="login-container">
+            <h1>Sentinel Mod Panel</h1>
+            <p>Пожалуйста, войдите в свою учетную запись Discord.</p>
+            <a href="/login" class="discord-login-btn">
+                <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Logo">
+                <span id="btnText">Login with Discord</span>
+                <div class="spinner hidden" id="spinner"></div>
+            </a>
+        </div>
+        <footer class="copyright">
+            <div class="copyright__content">
+                &copy; 2024 Sentinel Mod Panel. Все права защищены.
+                <div class="footer-links">
+                    <a href="/privacy" class="footer-link">Политика конфиденциальности</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/terms" class="footer-link">Пользовательское соглашение</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/cookies" class="footer-link">Политика cookies</a>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 </html>

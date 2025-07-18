@@ -130,6 +130,27 @@ app.get('/logout', (req, res) => {
     });
 });
 
+app.get('/privacy', (req, res) => {
+    res.render('privacy', { 
+        title: 'Политика конфиденциальности',
+        user: req.isAuthenticated() ? req.user : null 
+    });
+});
+
+app.get('/terms', (req, res) => {
+    res.render('terms', { 
+        title: 'Пользовательское соглашение',
+        user: req.isAuthenticated() ? req.user : null 
+    });
+});
+
+app.get('/cookies', (req, res) => {
+    res.render('cookies', { 
+        title: 'Политика использования cookies',
+        user: req.isAuthenticated() ? req.user : null 
+    });
+});
+
 app.post('/add-warning', checkAuth, async (req, res) => {
     try {
         const { userId, username, reason } = req.body;

@@ -4,12 +4,20 @@ body {
     padding: 0;
     background-color: #f5f5f5;
     color: #333;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 header {
@@ -114,6 +122,8 @@ th {
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.5s ease;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .discord-login-btn {
@@ -121,15 +131,435 @@ th {
     align-items: center;
     gap: 10px;
     padding: 12px 24px;
-    background-color: #4343e1;
+    background-color: #4c4c4c;
     color: white;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 20px;
     font-weight: bold;
-    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.discord-login-btn:hover {
+    background-color: #141415;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.discord-login-btn:active {
+    transform: translateY(0);
+}
+
+.security-note {
+    font-size: 12px;
+    color: #666;
+    margin-top: 30px;
+}
+
+@media (max-width: 480px) {
+
+    .header-login-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .header-login-btn img {
+        width: 20px;
+        height: 16px;
+    }
+
+    .login-container {
+        margin: 50px 20px;
+        padding: 30px 20px;
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transform: scale(0.98); /* Небольшое уменьшение для мобильных */
+        transition: all 0.5s ease; /* Плавный переход */
+    }
+    
+    .discord-login-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #606162;
+        transition: all 0.3s ease; /* Плавный переход кнопки */
+    }
+
+    .policy-container {
+        padding: 20px 15px;
+        width: calc(100% - 30px);
+    }
+    
+    .policy-title {
+        font-size: 1.3rem;
+    }
+    
+    .policy-subtitle {
+        font-size: 1rem;
+    }
+    
+    .policy-list {
+        padding-left: 20px;
+    }
+    
+    .policy-table th, 
+    .policy-table td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    body {
+        background-color: #121212;
+        transition: background-color 0.5s ease, color 0.5s ease; /* Плавный переход фона */
+    }
+
+    .logo h1 {
+        font-size: 1.3rem;
+    }
+
+}
+
+.spinner {
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top: 2px solid white;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+.policy-container h1 {
+    overflow-wrap: break-word; /* Перенос длинных слов */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hidden {
+    display: none;
+}
+
+.copyright {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #666;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top: auto; /* Это важно для прижатия футера вниз */
+}
+
+.copyright__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.footer-link {
+    color: #4343e1;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #2a2a8a;
+    text-decoration: underline;
+}
+
+.footer-separator {
+    color: #999;
+    padding: 0 5px;
+}
+
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+
+    .header-container {
+        padding: 15px;
+    }
+    
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-actions {
+        justify-content: flex-end;
+    }
+    
+    .header-login-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .login-container {
+        margin-bottom: 60px; /* Добавляем отступ снизу для контейнера */
+        padding-bottom: 20px; /* Дополнительный отступ */
+    }
+    
+    .copyright {
+        position: static; /* Убираем фиксированное позиционирование */
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+    }
+    
+    .footer-separator {
+        display: none;
+    }
+
+    .policy-container {
+        padding: 25px 20px;
+        margin: 20px auto;
+        width: calc(100% - 40px); /* Отступы по бокам */
+    }
+    
+    .policy-title {
+        font-size: 1.5rem;
+    }
+    
+    .policy-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .policy-subsection {
+        font-size: 1rem;
+    }
+    
+    .policy-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .policy-list li {
+        margin-bottom: 8px;
+    }
+
+}
+
+/* Для темной темы */
+@media (prefers-color-scheme: dark) {
+    .copyright {
+        background-color: rgba(30, 30, 30, 0.9);
+        border-top: 1px solid #444;
+        color: #aaa;
+    }
+
+    .footer-link {
+        color: #babec2;
+    }
+    
+    .footer-link:hover {
+        color: #606162;
+    }
+    
+    .footer-separator {
+        color: #666;
+    }
+
+    .policy-container {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .back-btn {
+        background-color: #1e1e1e;
+    }
+
+    .link-privacy {
+        color: #606162;
+    }
+    
+    .link-privacy:hover {
+        color: #262626;
+    }
 }
 
 .discord-login-btn img {
     width: 25px;
     height: 20px;
+}
+
+.policy-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    line-height: 1.6;
+    font-size: 15px;
+    box-sizing: border-box;
+    width: calc(100% - 40px); /* Добавляем отступы по бокам */
+}
+
+.policy-content {
+    margin: 30px 0;
+    line-height: 1.6;
+    overflow-wrap: break-word; /* Перенос длинных слов */
+}
+
+.policy-title {
+    font-size: 1.8rem;
+    color: #4343e1;
+    margin-bottom: 25px;
+    font-weight: bold;
+    text-align: center;
+    word-break: break-word;
+}
+
+.policy-section {
+    margin-bottom: 30px;
+}
+
+.policy-subtitle {
+    font-size: 1.3rem;
+    margin: 25px 0 15px 0;
+    font-weight: bold;
+    color: #4343e1;
+    word-break: break-word;
+}
+
+.policy-subsection {
+    font-size: 1.1rem;
+    margin: 20px 0 10px 0;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.policy-list {
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.policy-list li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 15px;
+    word-break: break-word;
+}
+
+.policy-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4343e1;
+}
+
+.policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    word-break: break-word;
+}
+
+.policy-table th, .policy-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.policy-table th {
+    background-color: #f5f5f5;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #606162;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #262626;
+}
+
+.link-privacy {
+    color: #606162;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-privacy:hover {
+    color: #262626;
+    text-decoration: underline;
+}
+
+.header-page {
+    max-width: 900px;
+    margin-bottom: 30px;
+    padding: 25px 20px;
+    margin: 30px auto;
+    width: calc(100% - 40px); /* Отступы по бокам */
+    display: flex;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo h1 {
+    margin: 0;
+    color: #4343e1;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Кнопка Discord в шапке */
+.header-login-btn {
+    padding: 15px 15px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
 }
