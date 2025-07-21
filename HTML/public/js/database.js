@@ -62,5 +62,59 @@ module.exports = {
             console.error('Error adding warning:', err);
             return null;
         }
+    },
+
+    async createVerificationRequest(userId, username, avatar, message = '') {
+        try {
+            const res = await pool.query(
+                `INSERT INTO verification_requests 
+                (user_id, user_name, user_avatar, message, status) 
+                VALUES ($1, $2, $3, $4, 'pending') 
+                RETURNING *`,
+                [userId, username, avatar, message]
+            );
+            return res.rows[0];
+        } catch (err) {
+            console.error('Error creating verification request:', err);
+            return null;
+        }
+    },
+    
+    async updateVerificationRequest(requestId, updates) {
+        try {
+            const { status, moderatorId, moderatorName, reason } = updates;
+            const res = await pool.query(
+                `UPDATE verification_requests 
+                SET status = $1, moderator_id = $2, moderator_name = $3, reason = $4 
+                WHERE id = $5 
+                RETURNING *`,
+                [status, moderatorId, moderatorName, reason, requestId]
+            );
+            return res.rows[0];
+        } catch (err) {
+            console.error('Error updating verification request:', err);
+            return null;
+        }
+    },
+    
+    async getVerificationRequests(status) {
+        try {
+            let query = 'SELECT * FROM verification_requests';
+            const params = [];
+            
+            if (status) {
+                query += ' WHERE status = $1';
+                params.push(status);
+            }
+            
+            query += ' ORDER BY created_at DESC';
+            
+            const res = await pool.query(query, params);
+            return res.rows;
+        } catch (err) {
+            console.error('Error fetching verification requests:', err);
+            return [];
+        }
     }
+
 };

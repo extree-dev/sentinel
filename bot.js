@@ -8,17 +8,8 @@ const guildMemberAddEvent = require('./events/guildMemberAdd');
 const interactionCreate = require('./utils/interactionCreate');
 const setupVerification = require('./systems/verificationSystem');
 const { fork } = require('child_process'); // Добавляем fork
-
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.GuildPresences // Это важно для статусов!
-    ]
-});
+const { getClient } = require('./discordClient');
+const client = getClient();
 
 const startWebServer = () => {
     const webProcess = fork(path.join(__dirname, 'HTML', 'app.js'), {

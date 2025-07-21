@@ -114,7 +114,7 @@ th {
 
 .btn {
     padding: 5px 10px;
-    border-radius: 4px;
+    margin: 10px 5px;
     text-decoration: none;
     color: rgb(73, 61, 61);
     font-size: 14px;
@@ -696,12 +696,34 @@ body.dark-theme {
     display: none;
     position: absolute;
     right: 0;
+    top: calc(100% + 5px);
     background-color: #f9f9f9;
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 4px;
     overflow: hidden;
+    margin: 10px;
+    padding-top: 10px; /* Внутренний отступ вместо внешнего */
+}
+
+.user-dropdown-content.show{
+    display: block;
+}
+
+.user-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-dropdown-container::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: transparent;
 }
 
 .user-dropdown:hover .user-dropdown-content {
@@ -714,6 +736,8 @@ body.dark-theme {
     display: block;
     color: #333;
     transition: background-color 0.3s;
+    position: relative; /* Создаём контекст для бейджа */
+    overflow: visible; /* Разрешаем выход за границы */
 }
 
 .user-dropdown-item:hover {
@@ -812,16 +836,195 @@ body.dark-theme .close-modal {
     border-bottom: 1px solid #eee;
 }
 
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+.avatar-container {
+    position: relative;
     margin-right: 20px;
 }
 
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.status-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid #2f3136;
+}
+
+.profile-info h2 {
+    margin: 0;
+    color: #2f3136;
+}
+
 .profile-id {
-    color: #777;
-    font-size: 0.9em;
+    color: #b9bbbe;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.profile-badges {
+    display: flex;
+    gap: 5px;
+}
+
+.badge {
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.bot-badge {
+    background-color: #5865F2;
+    color: white;
+}
+
+.bot-badge {
+    background-color: #5865F2;
+    color: white;
+}
+
+.system-badge {
+    background-color: #eb459e;
+    color: white;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+}
+
+.detail-section h3 {
+    color: #40444b;
+    border-bottom: 1px solid #40444b;
+    padding-bottom: 5px;
+}
+
+.detail-row {
+    display: flex;
+    margin: 10px 0;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #b9bbbe;
+    min-width: 150px;
+}
+
+.detail-value {
+    color: #40444b;
+}
+
+.roles-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.role-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: black;
+}
+
+.profile-warnings {
+    margin-top: 30px;
+}
+
+.warnings-container {
+    margin-top: 10px;
+}
+
+.warning-item {
+    background-color: #2f3136;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.warning-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.warning-date {
+    color: #b9bbbe;
+    font-size: 14px;
+}
+
+.warning-id {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.warning-reason, .warning-moderator {
+    color: #dcddde;
+    font-size: 14px;
+    margin: 3px 0;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.warn-btn {
+    background-color: #faa61a;
+}
+
+.ban-btn {
+    background-color: #f04747;
+}
+
+.loading-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+}
+
+.loading-profile .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #7289da;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-loading {
+    text-align: center;
+    padding: 30px;
+}
+
+.error-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #f04747;
+    color: white;
+    border-radius: 50%;
+    line-height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
 }
 
 .profile-details {
@@ -884,6 +1087,19 @@ body.dark-theme .close-modal {
 /* Темная тема для профиля */
 body.dark-theme .profile-header {
     border-bottom-color: #444;
+    color: #bababa;
+}
+
+body.dark-theme .profile-info h2{
+    color: #bababa;
+}
+
+body.dark-theme .detail-section h3{
+    color: #bababa;
+}
+
+body.dark-theme .detail-value{
+    color: #bababa;
 }
 
 body.dark-theme .warn-form {
@@ -902,7 +1118,7 @@ body.dark-theme .warn-form textarea {
     overflow: hidden;
 }
 
-.btn:active, .theme-toggle:active, .user-dropdown-item:active, 
+.btn:active, .theme-toggle:active,
 .warn-btn:active, .submit-btn:active, .cancel-btn:active {
     transform: translateY(2px);
 }
@@ -921,6 +1137,7 @@ body.dark-theme .warn-form textarea {
     border-radius: 100%;
     transform: scale(1, 1) translate(-50%, -50%);
     transform-origin: 50% 50%;
+    display: none; /* Отключаем мешающий псевдоэлемент */
 }
 
 .btn:active::after, .theme-toggle:active::after, .user-dropdown-item:active::after,
@@ -1027,7 +1244,7 @@ header {
 }
 
 .modal-content {
-    margin: 150px auto;
+    margin: 165px auto;
 }
 
 /* Улучшенные отступы для модальных окон */
@@ -1181,6 +1398,180 @@ header {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
 }
+
+.online-user-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.online-user-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.online-user-card:active {
+    transform: translateY(1px);
+}
+
+
+/* Добавляем стили для нового окна верификации */
+.verification-request {
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #e9e9e9;
+}
+
+.verification-request-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.verification-request-user {
+    display: flex;
+    align-items: center;
+}
+
+.verification-request-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.verification-request-content {
+    margin-top: 10px;
+}
+
+.verification-request-image {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.verification-tab {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+.verification-tab.active {
+    border-bottom-color: #7289da;
+    color: #7289da;
+}
+
+.verification-tabs {
+    display: flex;
+    border-bottom: 1px solid #40444b;
+    margin-bottom: 15px;
+}
+
+.verificationRequests{
+    color:#3d3d3d
+}
+
+.verification-request-user span{
+    padding: 0 0 0 10px;
+}
+
+.approve-btn, .reject-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+/* Стили для кнопки одобрения */
+.approve-btn {
+    background-color: #dddddd;
+    color: #333;
+}
+
+.approve-btn:hover {
+    background-color: #43b581;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Стили для кнопки отклонения */
+.reject-btn {
+    background-color: rgb(199, 54, 54);
+    color: white;
+}
+
+.reject-btn:hover {
+    background-color: #f04747;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Эффект нажатия */
+.approve-btn:active, .reject-btn:active {
+    transform: translateY(1px);
+}
+
+.user-avatar-small{
+    width: 45px;
+    height: 45px;
+}
+
+.badge-verification {
+    display: inline-block; /* Важно! Без этого span может "сплющиваться" */
+    min-width: 18px; /* Фиксированная ширина для одинакового размера */
+    padding: 3px 6px; /* Увеличим отступы */
+    border-radius: 10px;
+    background-color: #f04747; /* Яркий красный для контраста */
+    color: white !important; /* Принудительно белый текст */
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    margin-left: 8px;
+    line-height: 1;
+    vertical-align: middle; /* Выравнивание по центру относительно текста */
+    position: relative; /* Для корректного позиционирования */
+    z-index: 1; /* Поднимаем над возможными псевдоэлементами */
+}
+
+/* Если у вас есть темная тема */
+.dark-theme .badge-verification {
+    background-color: #ff6b6b;
+    color: white !important;
+}
+
+#verificationRequestsBtn #verificationCount.badge-verification {
+    display: inline-block !important;
+    min-width: 18px !important;
+    height: 18px !important;
+    padding: 0 5px !important;
+    border-radius: 50% !important; /* Круглая форма */
+    background-color: #f04747 !important;
+    color: white !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin-left: 8px !important;
+    line-height: 18px !important;
+    vertical-align: middle !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    box-sizing: border-box !important;
+}
+
+/* Темная тема */
+.dark-theme #verificationRequestsBtn #verificationCount.badge-verification {
+    background-color: #ff6b6b !important;
+}
+
+/* Гарантируем видимость текста */
+#verificationRequestsBtn {
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
 
 @keyframes ripple {
     0% {

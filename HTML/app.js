@@ -4,10 +4,15 @@ require('dotenv').config({
     override: true,
     debug: true
 });
-const { client } = require('../bot'); // Импортируем клиент
+
+const { getClient } = require('../discordClient');
+const client = getClient();
+
 const { pool,
     getWarningsFromDatabase,
     removeWarningFromDatabase } = require('./public/js/database');
+const { Sequelize, DataTypes } = require('sequelize');
+//const { VerificationRequest } = require('../models/verificationRequest')
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -26,6 +31,30 @@ process.on('SIGINT', () => {
     console.log('Завершение веб-сервера');
     process.exit(0);
 });
+
+// Инициализация Sequelize (если ещё не сделано)
+const sequelize = new Sequelize({
+    dialect: 'postgres',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+});
+
+const VerificationRequest = require('../models/verificationRequest')(sequelize, DataTypes);
+
+// Проверка подключения к БД и синхронизация моделей
+(async () => {
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync(); // или { alter: true } для безопасного обновления таблиц
+        console.log('Database connection established and models synced');
+    } catch (error) {
+        console.error('Database connection error:', error);
+        process.exit(1);
+    }
+})();
 
 pool.query('SELECT NOW()')
     .then(() => console.log('Database connection established'))
@@ -197,35 +226,63 @@ app.get('/api/user-profile/:userId', checkAuth, async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Получаем базовую информацию о пользователе
+        // 1. Получаем базовую информацию о пользователе
         const userResponse = await axios.get(`https://discord.com/api/v10/users/${userId}`, {
             headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
         });
 
-        // Получаем информацию о членстве в гильдии
-        const guildResponse = await axios.get(`https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${userId}`, {
-            headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
-        });
-
-        // Получаем информацию о ролях
-        const roles = await Promise.all(guildResponse.data.roles.map(async roleId => {
-            const roleResponse = await axios.get(`https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/roles/${roleId}`, {
+        // 2. Получаем информацию о членстве в гильдии
+        const guildResponse = await axios.get(
+            `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/members/${userId}`,
+            {
                 headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
-            });
-            return roleResponse.data;
-        }));
+            }
+        ).catch(err => ({ data: {} })); // Если пользователь не на сервере
 
-        // Получаем предупреждения из БД
+        // 3. Получаем информацию о ролях
+        let roles = [];
+        if (guildResponse.data.roles) {
+            roles = await Promise.all(
+                guildResponse.data.roles.map(async roleId => {
+                    const roleResponse = await axios.get(
+                        `https://discord.com/api/v10/guilds/${process.env.DISCORD_GUILD_ID}/roles/${roleId}`,
+                        {
+                            headers: { 'Authorization': `Bot ${process.env.DISCORD_TOKEN}` }
+                        }
+                    );
+                    return roleResponse.data;
+                })
+            );
+        }
+
+        // 4. Получаем статус пользователя (если бот онлайн)
+        let status = 'offline';
+        if (client) {
+            const guild = client.guilds.cache.get(process.env.DISCORD_GUILD_ID);
+            if (guild) {
+                const member = guild.members.cache.get(userId);
+                if (member) {
+                    status = member.presence?.status || 'offline';
+                }
+            }
+        }
+
+        // 5. Получаем предупреждения из БД
         const warnings = await pool.query(
             'SELECT * FROM warns WHERE user_id = $1 ORDER BY created_at DESC',
             [userId]
         );
 
+        res.set('Cache-Control', 'no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+
         res.json({
             ...userResponse.data,
             joined_at: guildResponse.data.joined_at,
             roles: roles,
-            warnings: warnings.rows
+            warnings: warnings.rows,
+            status: status
         });
     } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -241,14 +298,14 @@ app.get('/api/online-members', checkAuth, async (req, res) => {
 
         const guildId = process.env.DISCORD_GUILD_ID;
         const guild = client.guilds.cache.get(guildId);
-        
+
         if (!guild) {
             return res.status(404).json({ error: 'Guild not found' });
         }
 
         // Загружаем всех участников с presence data
         await guild.members.fetch({ withPresences: true });
-        
+
         const onlineMembers = guild.members.cache
             .filter(member => {
                 const status = member.presence?.status;
@@ -266,6 +323,76 @@ app.get('/api/online-members', checkAuth, async (req, res) => {
     } catch (error) {
         console.error('Error fetching online members:', error);
         res.status(500).json({ error: 'Failed to fetch online members' });
+    }
+});
+
+app.get('/api/verification-requests', checkAuth, async (req, res) => {
+    try {
+        const { status } = req.query;
+        const validStatuses = ['pending', 'approved', 'rejected'];
+
+        if (status && !validStatuses.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status parameter' });
+        }
+
+        // Используем sequelize напрямую, если модель не работает
+        const requests = await sequelize.models.VerificationRequest.findAll({
+            where: status ? { status } : {},
+            order: [['created_at', 'DESC']]
+        });
+
+        res.json(requests);
+    } catch (error) {
+        console.error('Error fetching verification requests:', error);
+        res.status(500).json({
+            error: 'Internal server error',
+            details: error.message // Добавляем детали ошибки для отладки
+        });
+    }
+});
+
+app.get('/api/verification-requests/count', async (req, res) => {
+    try {
+        // Правильный метод для Sequelize
+        const count = await VerificationRequest.count({
+            where: { status: 'pending' }
+        });
+        
+        res.json({ total: count || 0 });
+    } catch (error) {
+        console.error('Count error:', error);
+        res.json({ total: 0 });
+    }
+});
+
+app.patch('/api/verification-requests/:requestId', checkAuth, async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const { action, reason } = req.body;
+
+        if (!['approve', 'reject'].includes(action)) {
+            return res.status(400).json({ error: 'Invalid action' });
+        }
+
+        const request = await VerificationRequest.findByPk(requestId);
+        if (!request) {
+            return res.status(404).json({ error: 'Request not found' });
+        }
+
+        // Обновляем заявку
+        request.status = action === 'approve' ? 'approved' : 'rejected';
+        request.moderator_id = req.user.id;
+        request.moderator_name = req.user.username;
+        request.reason = reason || null;
+        await request.save();
+
+        // Если нужно, можно добавить логику для Discord
+        // Например, снять временную роль при одобрении
+
+        res.json({ success: true, request });
+    } catch (error) {
+        console.error('Error processing verification request:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 

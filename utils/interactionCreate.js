@@ -1,3 +1,4 @@
+// interactionCreate.js
 const { Events, MessageFlags } = require('discord.js');
 const verificationHandler = require('./verificationHandler');
 
