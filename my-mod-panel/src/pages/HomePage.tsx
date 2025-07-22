@@ -31,7 +31,6 @@ const generateParticles = (): Particle[] => {
 export default function HomePage() {
     // Указываем тип состояния Particle[]
     const [particles, setParticles] = useState<Particle[]>([]);
-    const navigate = useNavigate(); // Хук для навигации
 
     const handleLoginClick = () => {
 
