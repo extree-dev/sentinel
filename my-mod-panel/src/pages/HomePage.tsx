@@ -33,14 +33,13 @@ export default function HomePage() {
     const [particles, setParticles] = useState<Particle[]>([]);
 
     const handleLoginClick = () => {
-
-        const clientId = '1394946498386722866'; // Замените на ваш Client ID из Discord Dev Portal
+        const clientId = '1394946498386722866';
         const redirectUri = encodeURIComponent('http://localhost:5173/callback');
         const scope = encodeURIComponent('identify email');
         const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
         
         window.location.href = discordAuthUrl;
-      };
+    };
 
     useEffect(() => {
         setParticles(generateParticles());
