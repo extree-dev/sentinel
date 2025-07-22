@@ -7,14 +7,15 @@ const logger = require('./utils/logger');
 const guildMemberAddEvent = require('./events/guildMemberAdd');
 const interactionCreate = require('./utils/interactionCreate');
 const setupVerification = require('./systems/verificationSystem');
-const { fork } = require('child_process'); // Добавляем fork
+const { spawn } = require('child_process'); // Заменяем fork на spawn
 const { getClient } = require('./discordClient');
 const client = getClient();
 
 const startWebServer = () => {
-    const webProcess = fork(path.join(__dirname, 'HTML', 'app.js'), {
-        stdio: 'inherit', // Перенаправляем вывод в консоль
-        env: process.env // Передаем переменные окружения
+    const webProcess = spawn('npm', ['run', 'dev'], {
+        cwd: path.join(__dirname, 'my-mod-panel'), // Путь к папке с Vite-проектом
+        stdio: 'inherit',
+        shell: true // Для работы на Windows
     });
 
     webProcess.on('error', (err) => {

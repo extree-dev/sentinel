@@ -1,0 +1,357 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  }
+  
+  .home-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.3);
+    animation: float 15s infinite linear;
+    will-change: transform;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-100vh) rotate(360deg); }
+  }
+  
+  .home-title {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 0 15px rgba(88, 101, 242, 0.5);
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.3s forwards;
+  }
+  
+  .home-description {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 3rem;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.6s forwards;
+  }
+  
+  .home-button {
+    position: relative;
+    z-index: 1;
+    /* остальные стили кнопки */
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  /* Адаптивные стили */
+  @media (max-width: 768px) {
+    .home-title {
+      font-size: 2rem;
+    }
+    
+    .home-description {
+      font-size: 1rem;
+    }
+  }
+  
+  .home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #5865F2 0%, #8146FF 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+      0 4px 15px rgba(88, 101, 242, 0.3),
+      0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1;
+    transform-style: preserve-3d;
+  }
+  
+  /* Градиентная подсветка */
+  .home-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Эффект "жидкого металла" при наведении */
+  .home-button:hover {
+    background: linear-gradient(135deg, #4752C4 0%, #7038EE 100%);
+    transform: 
+      translateY(-3px) 
+      rotateX(5deg) 
+      rotateY(2deg) 
+      scale(1.02);
+    box-shadow: 
+      0 8px 25px rgba(88, 101, 242, 0.4),
+      0 5px 10px rgba(0,0,0,0.1);
+    animation: colorPulse 3s infinite alternate;
+  }
+  
+  .home-button:hover::before {
+    opacity: 1;
+  }
+  
+  /* Эффект нажатия */
+  .home-button:active {
+    transform: 
+      translateY(1px) 
+      scale(0.98);
+    box-shadow: 
+      0 2px 8px rgba(88, 101, 242, 0.3),
+      0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  /* Анимация иконки Discord */
+  .home-button img {
+    width: 22px;
+    height: 22px;
+    transition: 
+      transform 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6),
+      filter 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  }
+  
+  .home-button:hover img {
+    transform: 
+      rotate(15deg) 
+      scale(1.15);
+    filter: 
+      drop-shadow(0 3px 6px rgba(0,0,0,0.3)) 
+      brightness(1.1);
+  }
+  
+  /* Пульсация градиента */
+  @keyframes colorPulse {
+    0% {
+      background: linear-gradient(135deg, #4752C4 0%, #7038EE 100%);
+    }
+    50% {
+      background: linear-gradient(135deg, #4a5bd1 0%, #7d4af5 100%);
+    }
+    100% {
+      background: linear-gradient(135deg, #3f4ab8 0%, #6b30e0 100%);
+    }
+  }
+  
+  /* Эффект "блеска" */
+  .home-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255,255,255,0) 45%,
+      rgba(255,255,255,0.15) 50%,
+      rgba(255,255,255,0) 55%
+    );
+    transform: rotate(30deg);
+    z-index: -1;
+    transition: all 0.6s ease;
+    opacity: 0;
+  }
+  
+  .home-button:hover::after {
+    animation: shine 1.5s ease-out infinite;
+    opacity: 1;
+  }
+  
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) rotate(30deg);
+    }
+    100% {
+      transform: translateX(100%) rotate(30deg);
+    }
+  }
+  
+  /* Эффект частиц при клике */
+  .home-button:focus:not(:active)::before {
+    animation: particles 0.6s ease-out forwards;
+  }
+  
+  @keyframes particles {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+      background: radial-gradient(
+        circle at center,
+        rgba(255,255,255,0.8) 0%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+  
+  .home-button img {
+    width: 20px;
+    height: 15px;
+  }
+
+
+  .privacy-consent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    padding: 0.9rem 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    line-height: 1.5;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .privacy-icon {
+    flex-shrink: 0;
+    color: #5865F2;
+    transition: transform 0.3s ease;
+  }
+  
+  .privacy-text {
+    position: relative;
+    padding-right: 0.3rem;
+  }
+  
+  .privacy-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #5865F2;
+    text-decoration: none !important;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    padding: 0.2rem 0;
+    
+    &:hover {
+      color: #4752c4;
+      transform: translateX(3px);
+      
+      .external-icon {
+        transform: translateX(2px) translateY(-2px);
+      }
+      
+      .link-text {
+        background: linear-gradient(90deg, #5865F2, #4752c4);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+    
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+  
+  .external-icon {
+    transition: transform 0.3s ease;
+    color: currentColor;
+  }
+  
+  .link-text {
+    transition: all 0.4s ease;
+    position: relative;
+  }
+  
+  /* Микроанимация при загрузке */
+  @keyframes fadeInSlide {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .privacy-consent {
+    animation: fadeInSlide 0.6s ease-out forwards;
+  }
+  
+  /* Адаптация для мобильных */
+  @media (max-width: 640px) {
+    .privacy-consent {
+      padding: 0.8rem;
+      font-size: 0.85rem;
+      gap: 0.5rem;
+    }
+    
+    .privacy-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  
+
+  /* Адаптивность */
+    @media (max-width: 768px) {
+        .home-title {
+        font-size: 2rem;
+        }
+        
+        .home-description {
+        font-size: 1rem;
+        }
+        
+        .home-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        }
+    }
