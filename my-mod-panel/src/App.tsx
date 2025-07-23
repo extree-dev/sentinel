@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard'; // Импортируем компонент Dashboard
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -27,18 +27,18 @@ function App() {
       <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/cookies" element={<CookiePolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/callback" element={<Callback />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </main>
 

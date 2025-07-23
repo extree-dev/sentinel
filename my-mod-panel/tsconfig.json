@@ -5,7 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "verbatimModuleSyntax": true,
     "jsx": "react-jsx",
     "types": ["react", "react-dom"]
   }
+  
 }

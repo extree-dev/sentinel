@@ -1,6 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, MessageFlags } = require('discord.js');
 const { VERIFICATION_LOG_CHANNEL_ID, TEMP_ROLE_ID, ADMIN_ROLE_ID } = process.env;
-const { pool } = require('../HTML/public/js/database'); // Импортируем pool из database.js
 
 module.exports = {
     async handleVerificationRequest(interaction) {

@@ -11,27 +11,36 @@ const { spawn } = require('child_process'); // Заменяем fork на spawn
 const { getClient } = require('./discordClient');
 const client = getClient();
 
-const startWebServer = () => {
-    const webProcess = spawn('npm', ['run', 'dev'], {
-        cwd: path.join(__dirname, 'my-mod-panel'), // Путь к папке с Vite-проектом
+const startServers = () => {
+    // 1. Запуск Express-сервера (ваш server.js)
+    const expressServer = spawn('node', ['my-mod-panel/src/server/server.js'], {
+        cwd: __dirname,
         stdio: 'inherit',
-        shell: true // Для работы на Windows
+        shell: true,
+        env: {
+            ...process.env,
+            PORT: 3001, // Явно указываем порт
+            NODE_ENV: 'development'
+        }
     });
 
-    webProcess.on('error', (err) => {
-        logger.error('Ошибка веб-сервера:', err);
+    // 2. Запуск React-приложения
+    const reactApp = spawn('npm', ['run', 'dev'], {
+        cwd: path.join(__dirname, 'my-mod-panel'),
+        stdio: 'inherit',
+        shell: true
     });
 
-    webProcess.on('exit', (code) => {
-        logger.log(`Веб-сервер завершился с кодом ${code}`);
-    });
+    // Логирование
+    expressServer.on('exit', (code) =>
+        logger.log(`Express server exited with code ${code}`));
 };
 
 // Основная инициализация
 (async () => {
     try {
         await connect();
-        startWebServer(); // Запускаем веб-сервер
+        startServers(); // Заменяем startWebServer()
 
         // Инициализация бота
         client.commands = new Collection();
