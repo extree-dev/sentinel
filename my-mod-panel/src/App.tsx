@@ -1,11 +1,12 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import Dashboard from './pages/Dashboard'; // Импортируем компонент Dashboard
+
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CookiePolicy';
 import TermsOfService from './pages/TermsOfService';
 import Callback from './pages/Callback';
-import ProtectedRoute from './ProtectedRoute';
+import Dashboard from './pages/Dashboard';
+import AuthRoute from './components/AuthRoute';
 import './App.css';
 
 function App() {
@@ -27,16 +28,18 @@ function App() {
       <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/cookies" element={<CookiePolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/callback" element={<Callback />} />
-
+          <Route
+            path="/dashboard"
+            element={
+              <AuthRoute>
+                <Dashboard />
+              </AuthRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>
