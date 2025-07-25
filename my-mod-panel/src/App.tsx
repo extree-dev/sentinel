@@ -7,6 +7,10 @@ import TermsOfService from './pages/TermsOfService';
 import Callback from './pages/Callback';
 import Dashboard from './pages/Dashboard';
 import AuthRoute from './components/AuthRoute';
+import ModerationSection from './components/ModerationSection';
+import { AnalyticsSection } from './components/AnalyticsSection';
+import DiscordUsersPage from './pages/DiscordUsersPage';
+import SettingsSection from './pages/SettingsSection';
 import './App.css';
 
 function App() {
@@ -39,8 +43,14 @@ function App() {
                 <Dashboard />
               </AuthRoute>
             }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          >
+            <Route index element={<ModerationSection />} />
+            <Route path="moderation" element={<ModerationSection />} />
+            <Route path="analytics" element={<AnalyticsSection />} />
+            <Route path="users" element={<DiscordUsersPage />} />
+            <Route path="settings" element={<SettingsSection />} />
+            <Route path="*" element={<Navigate to="moderation" replace />} />
+          </Route>
 
         </Routes>
       </main>

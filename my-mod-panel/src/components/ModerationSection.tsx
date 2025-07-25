@@ -1,75 +1,112 @@
+// src/components/ModerationSection.tsx
+import { FiShield, FiClock } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
-import { type ModerationCase } from '../types/';
+import { type ModerationCase, type CaseType, type DiscordUser } from '../types';
+import CaseCard from '../components/CaseCard';
 
-const CaseCard = ({ data }: { data: ModerationCase }) => (
-  <div className="case-card">
-    <div className="case-header">
-      <span className={`case-type ${data.type}`}>{data.type}</span>
-      <span className="case-date">{new Date(data.createdAt).toLocaleString()}</span>
-    </div>
-    <div className="case-user">{data.username}</div>
-    <div className="case-reason">{data.reason}</div>
-  </div>
-);
-
-export const ModerationSection = () => {
-  const [activeFilter, setActiveFilter] = useState<'reports' | 'bans' | 'warns'>('reports');
+export default function ModerationSection() {
+  const [activeFilter, setActiveFilter] = useState<CaseType | 'all'>('all');
   const [cases, setCases] = useState<ModerationCase[]>([]);
+  const [user] = useState<DiscordUser | null>({
+    id: '123456789',
+    username: 'AdminModer',
+    discriminator: '0001',
+    avatar: 'a1b2c3d4e5',
+    isAdmin: true
+  });
 
   useEffect(() => {
-    // Заглушка с тестовыми данными
-    setCases([
+    // Имитация загрузки случаев
+    const mockCases: ModerationCase[] = [
       {
         id: '1',
-        userId: '111111111',
-        username: 'User1',
+        userId: '987654321',
+        username: 'RuleBreaker',
+        discriminator: '13',
+        avatar: 'f1e2d3c4b5',
         type: 'ban',
-        reason: 'Нарушение правил чата',
-        createdAt: '2023-05-01T10:00:00Z'
+        reason: 'Множественные нарушения правил',
+        createdAt: new Date(Date.now() - 3600000).toISOString(),
+        handled: false
       },
       {
         id: '2',
-        userId: '222222222',
-        username: 'User2',
+        userId: '567891234',
+        username: 'Spammer',
+        discriminator: '12',
+        avatar: null,
         type: 'warn',
-        reason: 'Спам',
-        createdAt: '2023-05-02T11:30:00Z'
+        reason: 'Рассылка рекламы',
+        createdAt: new Date(Date.now() - 7200000).toISOString(),
+        handled: true
+      },
+      {
+        id: '3',
+        userId: '345678912',
+        username: 'ToxicPlayer',
+        discriminator: '14',
+        avatar: 'a5b4c3d2e1',
+        type: 'report',
+        reason: 'Токсичное поведение в чате',
+        createdAt: new Date(Date.now() - 10800000).toISOString(),
+        handled: false
       }
-    ]);
-  }, [activeFilter]);
+    ];
+    setCases(mockCases);
+  }, []);
+
+  const handleCaseAction = (caseId: string, action: 'approve' | 'reject') => {
+    setCases(cases.map(c =>
+      c.id === caseId ? { ...c, handled: true } : c
+    ));
+  };
+
+  const filteredCases = activeFilter === 'all'
+    ? cases
+    : cases.filter(c => c.type === activeFilter);
 
   return (
-    <div className="moderation-grid">
-      <div className="filters">
-        <button 
-          className={activeFilter === 'reports' ? 'active' : ''}
-          onClick={() => setActiveFilter('reports')}
-        >
-          Жалобы
-        </button>
-        <button 
-          className={activeFilter === 'bans' ? 'active' : ''}
-          onClick={() => setActiveFilter('bans')}
-        >
-          Баны
-        </button>
-        <button 
-          className={activeFilter === 'warns' ? 'active' : ''}
-          onClick={() => setActiveFilter('warns')}
-        >
-          Предупреждения
-        </button>
+    <div className="moderation-section">
+      <div className="section-toolbar">
+        <div className="filter-tabs">
+          {['all', 'report', 'warn', 'ban', 'mute'].map(filter => (
+            <button
+              key={filter}
+              className={`filter-tab ${activeFilter === filter ? 'active' : ''}`}
+              onClick={() => setActiveFilter(filter as CaseType | 'all')}
+            >
+              {filter === 'all' && 'Все'}
+              {filter === 'report' && 'Жалобы'}
+              {filter === 'warn' && 'Предупреждения'}
+              {filter === 'ban' && 'Баны'}
+              {filter === 'mute' && 'Мьюты'}
+            </button>
+          ))}
+        </div>
+
+        <div className="search-box">
+          <input type="text" placeholder="Поиск..." />
+        </div>
       </div>
-      
+
       <div className="cases-list">
-        {cases.length > 0 ? (
-          cases.map(caseItem => (
-            <CaseCard key={caseItem.id} data={caseItem} />
-          ))
+        {filteredCases.length === 0 ? (
+          <div className="empty-state">
+            <FiClock size={48} />
+            <p>Нет случаев для отображения</p>
+          </div>
         ) : (
-          <div className="empty-state">Нет активных случаев</div>
+          filteredCases.map(caseItem => (
+            <CaseCard
+              key={caseItem.id}
+              caseData={caseItem}
+              onApprove={() => handleCaseAction(caseItem.id, 'approve')}
+              onReject={() => handleCaseAction(caseItem.id, 'reject')}
+              currentUser={user}
+            />
+          ))
         )}
       </div>
     </div>
   );
-};
+}
