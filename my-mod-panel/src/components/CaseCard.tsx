@@ -1,5 +1,4 @@
 // src/components/CaseCard.tsx
-import { FiClock } from 'react-icons/fi';
 import { useState } from 'react';
 import { type ModerationCase, type DiscordUser } from '../types';
 

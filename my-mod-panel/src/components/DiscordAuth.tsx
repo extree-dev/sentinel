@@ -1,5 +1,4 @@
 // components/DiscordAuth.tsx
-import { useEffect } from 'react';
 
 const DiscordAuth = () => {
   const handleLogin = () => {

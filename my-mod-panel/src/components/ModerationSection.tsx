@@ -1,5 +1,4 @@
 // src/components/ModerationSection.tsx
-import { FiShield, FiClock } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { type ModerationCase, type CaseType, type DiscordUser } from '../types';
 import CaseCard from '../components/CaseCard';
@@ -92,7 +91,6 @@ export default function ModerationSection() {
       <div className="cases-list">
         {filteredCases.length === 0 ? (
           <div className="empty-state">
-            <FiClock size={48} />
             <p>Нет случаев для отображения</p>
           </div>
         ) : (
