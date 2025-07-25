@@ -54,7 +54,7 @@ export default function ModerationSection() {
     setCases(mockCases);
   }, []);
 
-  const handleCaseAction = (caseId: string, action: 'approve' | 'reject') => {
+  const handleCaseAction = (caseId: string) => {
     setCases(cases.map(c =>
       c.id === caseId ? { ...c, handled: true } : c
     ));
@@ -98,8 +98,8 @@ export default function ModerationSection() {
             <CaseCard
               key={caseItem.id}
               caseData={caseItem}
-              onApprove={() => handleCaseAction(caseItem.id, 'approve')}
-              onReject={() => handleCaseAction(caseItem.id, 'reject')}
+              onApprove={() => handleCaseAction(caseItem.id)}
+              onReject={() => handleCaseAction(caseItem.id)}
               currentUser={user}
             />
           ))
