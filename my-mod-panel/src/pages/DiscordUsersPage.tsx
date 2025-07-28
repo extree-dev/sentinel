@@ -1,6 +1,6 @@
 // DiscordUsersPage.tsx
 import { useState, useEffect } from 'react';
-import { FiUser, FiClock, FiAward, FiChevronLeft, FiChevronRight, FiSearch, FiRefreshCw } from 'react-icons/fi';
+import { FiUser, FiClock, FiAward, FiRefreshCw } from 'react-icons/fi';
 import './css/DiscordUsersPage.css';
 import { type DiscordGuildMember } from '../types';
 
@@ -97,7 +97,6 @@ export default function DiscordUsersPage() {
                 <div className="toolbar-left">
                     <h3>Управление пользователями</h3>
                     <div className="stats-badge">
-                        <FiUser className="icon-light" />
                         <span>{users.filter(u => !u.is_bot).length} пользователей</span>
                         <span className="bot-count">
                             {users.filter(u => u.is_bot).length} ботов
@@ -107,7 +106,6 @@ export default function DiscordUsersPage() {
 
                 <div className="toolbar-right">
                     <div className="search-container">
-                        <FiSearch className="search-icon" />
                         <input
                             type="text"
                             placeholder="Поиск пользователей..."

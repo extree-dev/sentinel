@@ -1,16 +1,28 @@
 import express from 'express';
-import axios from 'axios';
-const axios = require('axios');
-const qs = require('querystring');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
+import axios from 'axios'; // Заменил require на import
+import qs from 'querystring';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url'; // Для замены __dirname
+import dotenv from 'dotenv';
+
+// Создаем аналог __dirname для ES-модулей
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Загрузка .env ДО создания приложения
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -61,13 +73,16 @@ app.post('/api/discord/token', async (req, res) => {
 
         const tokens = response.data;
         console.log('Successfully received tokens:');
-        console.log('Access Token:', tokens.access_token);
-        console.log('Refresh Token:', tokens.refresh_token);
+        console.log('Access Token:', tokens.access_token?.slice(0, 5) + '...'); // Не логируйте полный токен!
+        console.log('Refresh Token:', tokens.refresh_token?.slice(0, 5) + '...');
 
-        // Помечаем код как использованный
         usedCodes.add(code);
 
-        res.json(tokens);
+        res.json({
+            ...tokens,
+            // Добавляем флаг, что токен нужно сохранить
+            _saveToLocalStorage: true
+        });
     } catch (error) {
         console.error('Token exchange error:', error.response?.data || error.message);
         res.status(500).json({
@@ -77,30 +92,26 @@ app.post('/api/discord/token', async (req, res) => {
     }
 });
 
-app.get('/api/discord/users', async (req, res) => {
-    try {
-        const response = await axios.get(
-            `https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=1000`,
-            {
-                headers: { Authorization: `Bot ${BOT_TOKEN}` }
-            }
-        );
-
-        const members = response.data.map(member => ({
-            id: member.user.id,
-            username: member.user.username,
-            discriminator: member.user.discriminator,
-            avatar: member.user.avatar,
-            roles: member.roles,
-            joined_at: member.joined_at
-        }));
-
-        res.json(members);
-    } catch (error) {
-        console.error('Discord API error:', error.response?.data || error.message);
-        res.status(500).json({ error: 'Failed to fetch Discord members' });
+app.get('/api/discord/user', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+  
+    if (!token) {
+      console.log('No token provided');
+      return res.status(401).json({ error: 'Token required' });
     }
-});
+  
+    try {
+      // Только основные данные пользователя
+      const userRes = await axios.get('https://discord.com/api/users/@me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      res.json(userRes.data);
+      
+    } catch (error) {
+      console.error('Discord API error:', error.response?.status);
+      res.status(401).json({ error: 'Invalid token' });
+    }
+  });
 
 app.post('/api/discord/refresh', async (req, res) => {
     const { refresh_token } = req.body;
@@ -188,9 +199,64 @@ app.get('/api/guild-members', async (req, res) => {
     }
 });
 
-app.use(cors({
-    origin: 'http://localhost:3000', // Адрес фронтенда
-    credentials: true
-}));
+app.get('/api/discord/user', async (req, res) => {
+    const accessToken = req.headers.authorization?.split(' ')[1];
+
+    if (!accessToken) {
+        return res.status(401).json({ error: 'Access token missing' });
+    }
+
+    try {
+        // Получаем данные пользователя из Discord
+        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
+        // Получаем данные о членстве в гильдии
+        const memberResponse = await axios.get(
+            `https://discord.com/api/guilds/${GUILD_ID}/members/${userResponse.data.id}`,
+            {
+                headers: {
+                    Authorization: `Bot ${BOT_TOKEN}`
+                }
+            }
+        );
+
+        // Определяем роли
+        const isAdmin = memberResponse.data.roles.includes(process.env.ADMIN_ROLE_ID);
+        const isModerator = isAdmin || memberResponse.data.roles.includes(process.env.MODERATOR_ROLE_ID);
+
+        res.json({
+            ...userResponse.data,
+            ...memberResponse.data,
+            isAdmin,
+            isModerator
+        });
+    } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        res.status(500).json({ error: 'Failed to fetch user data' });
+    }
+});
+
+app.get('/api/discord/guilds/:guildId/members/@me', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { guildId } = req.params;
+
+    try {
+        const response = await axios.get(
+            `https://discord.com/api/guilds/${guildId}/members/@me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch guild member data' });
+    }
+});
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));

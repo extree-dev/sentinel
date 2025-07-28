@@ -4,9 +4,25 @@ export type CaseType = 'ban' | 'warn' | 'mute' | 'report';
 export interface DiscordUser {
     id: string;
     username: string;
+    global_name?: string | null;
     discriminator: string;
-    avatar: string | null;
+    avatar?: string | null;
+    bot?: boolean;
+    system?: boolean;
+    mfa_enabled?: boolean;
+    banner?: string | null;
+    accent_color?: number | null;
+    locale?: string;
+    verified?: boolean;
+    email?: string | null;
+    flags?: number;
+    premium_type?: number;
+    public_flags?: number;
+    avatar_decoration?: string | null;
+    // Кастомные поля
     isAdmin?: boolean;
+    isModerator?: boolean;
+    roles: string[]; // Добавляем поле с ролями
 }
 
 export interface ModerationCase {

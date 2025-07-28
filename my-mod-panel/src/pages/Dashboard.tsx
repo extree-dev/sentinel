@@ -2,39 +2,21 @@ import { useState, useEffect } from 'react';
 import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle } from 'react-icons/fi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './css/Dashboard.css';
+import type { DiscordUser } from '../types'; // Используем type-only import
+import { useAuth } from '../hooks/useAuth';
+import { UserRoleBadge } from '../components/UserRoleBadge';
 
 type TabType = 'moderation' | 'analytics' | 'users' | 'settings';
 
-interface DiscordUser {
-  id: string;
-  username: string;
-  discriminator: string;
-  avatar: string | null;
-  isAdmin?: boolean;
-}
 
 export default function Dashboard() {
-  const [user, setUser] = useState<DiscordUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuth(); // Данные теперь берутся из хука
   const navigate = useNavigate();
   const location = useLocation();
 
   // Определяем активную вкладку на основе URL
   const activeTab = location.pathname.split('/').pop() as TabType || 'moderation';
 
-  useEffect(() => {
-    // Имитация загрузки пользователя
-    setTimeout(() => {
-      setUser({
-        id: '123456789',
-        username: 'AdminModer',
-        discriminator: '0001',
-        avatar: 'a1b2c3d4e5',
-        isAdmin: true
-      });
-      setLoading(false);
-    }, 1000);
-  }, []);
 
   const handleTabChange = (tab: TabType) => {
     navigate(`/dashboard/${tab}`);
@@ -126,20 +108,40 @@ const Sidebar = ({ user, activeTab, onTabChange }: {
     </nav>
 
     <div className="sidebar-footer">
-      <div className="user-card">
-        <img
-          src={user?.avatar
-            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=80`
-            : `https://cdn.discordapp.com/embed/avatars/${parseInt(user?.discriminator || '0') % 5}.png`
-          }
-          alt="User Avatar"
-          className="user-avatar"
-        />
-        <div className="user-info">
-          <span className="username">{user?.username || 'Модератор'}</span>
-          <span className="user-tag">#{user?.discriminator || '0000'}</span>
+      {user ? (
+        <div className="user-card-sidebar">
+          <img
+            src={user.avatar
+              ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=256`
+              : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`
+            }
+            alt="User Avatar"
+            className="user-avatar"
+            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+              const target = e.currentTarget;
+              target.src = `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`;
+            }}
+          />
+          <div className="user-info">
+            <span className="username">{user.username}</span>
+            <span className="user-tag">#{user.discriminator}</span>
+            <UserRoleBadge user={user} />
+            {/* Безопасная проверка опциональных свойств */}
+            {'isModerator' in user && user.isModerator && (
+              <span className="moderator-badge">Модератор</span>
+            )}
+            {'isAdmin' in user && user.isAdmin && (
+              <span className="admin-badge">Админ</span>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="user-card-sidebar unauthorized">
+          <div className="user-info">
+            <span className="username">Не авторизован</span>
+          </div>
+        </div>
+      )}
     </div>
   </aside>
 );
