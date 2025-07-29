@@ -11,6 +11,7 @@ import ModerationSection from './components/ModerationSection';
 import { AnalyticsSection } from './components/AnalyticsSection';
 import DiscordUsersPage from './pages/DiscordUsersPage';
 import SettingsSection from './pages/SettingsSection';
+import UserVerification from './pages/UserVerification';
 import './App.css';
 
 function App() {
@@ -51,6 +52,15 @@ function App() {
             <Route path="settings" element={<SettingsSection />} />
             <Route path="*" element={<Navigate to="moderation" replace />} />
           </Route>
+
+          <Route
+            path="/verification"
+            element={
+              <AuthRoute isVerificationPage>
+                <UserVerification />
+              </AuthRoute>
+            }
+          />
 
         </Routes>
       </main>

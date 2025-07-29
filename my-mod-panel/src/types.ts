@@ -4,25 +4,24 @@ export type CaseType = 'ban' | 'warn' | 'mute' | 'report';
 export interface DiscordUser {
     id: string;
     username: string;
-    global_name?: string | null;
     discriminator: string;
     avatar?: string | null;
-    bot?: boolean;
-    system?: boolean;
-    mfa_enabled?: boolean;
-    banner?: string | null;
-    accent_color?: number | null;
-    locale?: string;
-    verified?: boolean;
-    email?: string | null;
-    flags?: number;
-    premium_type?: number;
-    public_flags?: number;
-    avatar_decoration?: string | null;
-    // Кастомные поля
+    // Добавьте вложенный объект user
+    user?: {
+        id: string;
+        username: string;
+        avatar: string | null;
+        discriminator: string;
+    };
+    roles?: Array<{
+        id: string;
+        name: string;
+        color?: number;
+        position?: number;
+    }>;
     isAdmin?: boolean;
     isModerator?: boolean;
-    roles: string[]; // Добавляем поле с ролями
+    isVerifier?: boolean; // Добавляем новое поле
 }
 
 export interface ModerationCase {
@@ -42,11 +41,12 @@ export type DiscordGuildMember = {
     username: string;
     discriminator: string;
     avatar: string | null;
-    roles: string[];
+    roles: DiscordRole[];
     joined_at: string;
     is_bot: boolean;
-    name: string,
-};
+    isAdmin?: boolean;
+    isModerator?: boolean;
+  };
 
 export interface UserRole {
     id: string;
@@ -69,3 +69,22 @@ export interface GuildRole {
     position: number;
     // другие свойства...
 }
+
+export interface DiscordRole {
+    id: string;
+    name: string;
+    color?: number;
+    position?: number;
+    permissions?: string;
+    hoist?: boolean;
+    managed?: boolean;
+    mentionable?: boolean;
+}
+
+export interface VerificationUser {
+    id: string;
+    username: string;
+    discriminator: string;
+    status: 'pending' | 'approved' | 'rejected';
+    registeredAt: string;
+  }

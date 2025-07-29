@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FiUser, FiClock, FiAward, FiRefreshCw } from 'react-icons/fi';
 import './css/DiscordUsersPage.css';
 import { type DiscordGuildMember } from '../types';
+import { getUsersWord, getBotsWord } from '../utils/words'
 
 export default function DiscordUsersPage() {
     const [users, setUsers] = useState<DiscordGuildMember[]>([]);
@@ -26,18 +27,14 @@ export default function DiscordUsersPage() {
                 }
 
                 const data = await response.json();
+                console.log('API response:', data); // Добавьте для отладки
 
-                const members = data.members.map((member: any) => ({
-                    id: member.user.id,
-                    username: member.user.global_name || member.user.username,
-                    discriminator: member.user.discriminator,
-                    avatar: member.user.avatar,
-                    roles: member.roles,
-                    joined_at: member.joined_at,
-                    is_bot: member.user.bot || false
-                }));
 
-                setUsers(members);
+                if (data.members) {
+                    setUsers(data.members);
+                }
+
+                setUsers(data.members);
             } catch (err) {
                 let errorMessage = 'Неизвестная ошибка';
                 if (err instanceof Error) {
@@ -97,9 +94,11 @@ export default function DiscordUsersPage() {
                 <div className="toolbar-left">
                     <h3>Управление пользователями</h3>
                     <div className="stats-badge">
-                        <span>{users.filter(u => !u.is_bot).length} пользователей</span>
+                        <span>
+                            {users.filter(u => !u.is_bot).length} {getUsersWord(users.filter(u => !u.is_bot).length)}
+                        </span>
                         <span className="bot-count">
-                            {users.filter(u => u.is_bot).length} ботов
+                            {users.filter(u => u.is_bot).length} {getBotsWord(users.filter(u => u.is_bot).length)}
                         </span>
                     </div>
                 </div>
@@ -186,15 +185,26 @@ export default function DiscordUsersPage() {
                                     <div className="meta-item">
                                         <FiAward className="meta-icon" />
                                         <div className="roles-container">
-                                            {user.roles.slice(0, 3).map((roleId, index) => (
-                                                <span
-                                                    key={roleId || `role-${index}`}
-                                                    className="role-badge"
-                                                >
-                                                    {roleId}
-                                                </span>
-                                            ))}
-                                            {user.roles.length > 3 && (
+                                            {user?.roles
+                                                ?.sort((a, b) => (b.position || 0) - (a.position || 0)) // Дополнительная сортировка на клиенте
+                                                .slice(0, 3)
+                                                .map((role, index) => (
+                                                    <span
+                                                        key={role.id}
+                                                        className="role-badge"
+                                                        style={{
+                                                            backgroundColor: role.color
+                                                                ? `#${role.color.toString(16).padStart(6, '0')}`
+                                                                : '#5865F2',
+                                                            order: -(role.position || 0) // Для flex/grid сортировки
+                                                        }}
+                                                        title={role.name}
+                                                    >
+                                                        {role.name}
+                                                    </span>
+                                                ))
+                                            }
+                                            {user?.roles?.length > 3 && (
                                                 <span className="role-more">
                                                     +{user.roles.length - 3}
                                                 </span>
@@ -208,6 +218,5 @@ export default function DiscordUsersPage() {
                 </>
             )}
         </div>
-
     );
 }

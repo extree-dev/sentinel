@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle } from 'react-icons/fi';
+import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle, FiLogOut } from 'react-icons/fi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './css/Dashboard.css';
 import type { DiscordUser } from '../types'; // Используем type-only import
@@ -10,7 +10,7 @@ type TabType = 'moderation' | 'analytics' | 'users' | 'settings';
 
 
 export default function Dashboard() {
-  const { user, loading } = useAuth(); // Данные теперь берутся из хука
+  const { user, loading, logout } = useAuth(); // Данные теперь берутся из хука
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,20 +37,38 @@ export default function Dashboard() {
         user={user}
         activeTab={activeTab}
         onTabChange={handleTabChange}
+        onLogout={logout} // Передаем logout в Sidebar
       />
 
       <main className="main-content">
         <div className="content-header">
-          <h2>
-            {activeTab === 'moderation' && <><FiShield /> Модерация</>}
-            {activeTab === 'analytics' && <><FiActivity /> Аналитика</>}
-            {activeTab === 'users' && <><FiUser /> Пользователи</>}
-            {activeTab === 'settings' && <><FiSettings /> Настройки</>}
+          <h2 className="header-title">
+            {activeTab === 'moderation' && (
+              <span className="tab-title">
+                <FiShield className="tab-icon" /> Модерация
+              </span>
+            )}
+            {activeTab === 'analytics' && (
+              <span className="tab-title">
+                <FiActivity className="tab-icon" /> Аналитика
+              </span>
+            )}
+            {activeTab === 'users' && (
+              <span className="tab-title">
+                <FiUser className="tab-icon" /> Пользователи
+              </span>
+            )}
+            {activeTab === 'settings' && (
+              <span className="tab-title">
+                <FiSettings className="tab-icon" /> Настройки
+              </span>
+            )}
           </h2>
+
           <div className="header-actions">
-            <button className="btn notification-btn">
-              <FiAlertTriangle />
-              <span className="badge">3</span>
+            <button className="notification-btn">
+              <FiAlertTriangle className="notification-icon" />
+              <span className="notification-badge pulse">3</span>
             </button>
           </div>
         </div>
@@ -63,10 +81,11 @@ export default function Dashboard() {
   );
 }
 
-const Sidebar = ({ user, activeTab, onTabChange }: {
+const Sidebar = ({ user, activeTab, onTabChange, onLogout }: {
   user: DiscordUser | null;
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
+  onLogout: () => void;
 }) => (
   <aside className="sidebar">
     <div className="logo">
@@ -110,31 +129,46 @@ const Sidebar = ({ user, activeTab, onTabChange }: {
     <div className="sidebar-footer">
       {user ? (
         <div className="user-card-sidebar">
-          <img
-            src={user.avatar
-              ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=256`
-              : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`
-            }
-            alt="User Avatar"
-            className="user-avatar"
-            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-              const target = e.currentTarget;
-              target.src = `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`;
-            }}
-          />
-          <div className="user-info">
-            <span className="username">{user.username}</span>
-            <span className="user-tag">#{user.discriminator}</span>
-            <UserRoleBadge user={user} />
-            {/* Безопасная проверка опциональных свойств */}
-            {'isModerator' in user && user.isModerator && (
-              <span className="moderator-badge">Модератор</span>
-            )}
-            {'isAdmin' in user && user.isAdmin && (
-              <span className="admin-badge">Админ</span>
-            )}
+          <div className="user-profile">
+            <img
+              src={
+                user?.user?.avatar
+                  ? `https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.webp?size=256`
+                  : user?.avatar
+                    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=256`
+                    : `https://cdn.discordapp.com/embed/avatars/${user?.discriminator && user.discriminator !== "0"
+                      ? parseInt(user.discriminator) % 5
+                      : 0
+                    }.png`
+              }
+              alt="User Avatar"
+              className="user-avatar"
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                const target = e.currentTarget;
+                target.src = `https://cdn.discordapp.com/embed/avatars/${user?.discriminator && user.discriminator !== "0"
+                    ? parseInt(user.discriminator) % 5
+                    : 0
+                  }.png`;
+              }}
+            />
+            <div className="user-info">
+              <span className="username">{user.username}</span>
+              {user.discriminator !== '0' && (
+                <span className="user-tag">#{user.discriminator}</span>
+              )}
+              {user.roles && <UserRoleBadge user={user} />}
+            </div>
           </div>
+
+          <button
+            className="logout-btn"
+            onClick={onLogout} // Используем переданный onLogout
+          >
+            <FiLogOut className="logout-icon" />
+            <span>Выйти</span>
+          </button>
         </div>
+
       ) : (
         <div className="user-card-sidebar unauthorized">
           <div className="user-info">
