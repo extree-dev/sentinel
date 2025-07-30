@@ -5,7 +5,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Для замены __dirname
 import dotenv from 'dotenv';
-import client from '../../../discordClient'
+import client from '../../../bot.js'
 
 // Создаем аналог __dirname для ES-модулей
 const __filename = fileURLToPath(import.meta.url);
