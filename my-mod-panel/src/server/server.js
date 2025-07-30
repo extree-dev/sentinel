@@ -5,23 +5,39 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Для замены __dirname
 import dotenv from 'dotenv';
-import client from '../../../discordClient.js'
+import { getClient } from '../../../discordClient.mjs';
+import { Pool } from 'pg';
+const client = getClient();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+const VERIFICATION_LOG_CHANNEL_ID = '1395295093120041114'
 
 client.on('ready', () => {
     console.log(`Discord client ready! Logged in as ${client.user.tag}`);
 });
 
-// Создаем аналог __dirname для ES-модулей
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+});
 
-// Загрузка .env ДО создания приложения
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
+    process.exit(-1);
+});
+
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
@@ -37,9 +53,20 @@ app.use((req, res, next) => {
 });
 
 const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URI } = process.env;
-
-// Хранилище использованных кодов (временное, для разработки)
 const usedCodes = new Set();
+
+async function query(text, params) {
+    try {
+        const start = Date.now();
+        const res = await pool.query(text, params);
+        const duration = Date.now() - start;
+        console.log('Executed query', { text, duration, rows: res.rowCount });
+        return res;
+    } catch (err) {
+        console.error('Error executing query', err);
+        throw err;
+    }
+}
 
 app.post('/api/verification/request', async (req, res) => {
     try {
@@ -59,49 +86,59 @@ app.post('/api/verification/request', async (req, res) => {
             return res.status(403).json({ error: 'Forbidden' });
         }
 
-        // Сохраняем запрос в базе (заглушка)
-        const requestId = `req_${Date.now()}`;
-        const newRequest = {
-            id: requestId,
-            discordTag,
-            userId,
-            username,
-            avatar,
-            status: 'pending',
-            createdAt: new Date().toISOString()
-        };
+        // Проверяем, есть ли уже активный запрос от этого пользователя
+        const existingRequest = await query(
+            'SELECT * FROM verification_requests WHERE user_id = $1 AND status = $2',
+            [userId, 'pending']
+        );
 
-        if (!client.isReady()) { // Проверяем, готов ли клиент
+        if (existingRequest.rows.length > 0) {
+            return res.status(400).json({ 
+                error: 'У вас уже есть активный запрос на верификацию' 
+            });
+        }
+
+        // Создаем новый запрос в базе данных
+        const requestId = `req_${Date.now()}`;
+        await query(
+            `INSERT INTO verification_requests 
+             (id, discord_tag, user_id, username, avatar, status, user_name) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            [requestId, discordTag, userId, username, avatar, 'pending', username] // Используем username как user_name
+        );
+
+        if (!client.isReady()) {
             return res.status(503).json({ error: 'Discord client is not ready yet' });
         }
 
-
         // Отправляем уведомление в Discord
-        const channelId = '1395295093120041114';
-        const channel = client.channels.cache.get(channelId);
-
+        const channel = client.channels.cache.get(VERIFICATION_LOG_CHANNEL_ID);
         if (!channel) {
             return res.status(500).json({ error: 'Discord channel not found' });
         }
 
-        if (channel) {
-            await channel.send({
-                embeds: [{
-                    title: '📄 Новый запрос на верификацию',
-                    description: `**Пользователь:** ${username} (${discordTag})\n**ID:** ${userId}`,
-                    color: 0x5865F2,
-                    thumbnail: {
-                        url: avatar
-                            ? `https://cdn.discordapp.com/avatars/${userId}/${avatar}.webp?size=256`
-                            : `https://cdn.discordapp.com/embed/avatars/0.png`
-                    },
-                    timestamp: new Date().toISOString(),
-                    footer: {
-                        text: `ID запроса: ${requestId}`
+        await channel.send({
+            embeds: [{
+                title: 'Новый запрос на верификацию',
+                description: [
+                    `**Пользователь:** <@${userId}>`,
+                    `**Discord:** ${discordTag}`,
+                    `**ID пользователя:** \`${userId}\``,
+                    `**Время запроса:** <t:${Math.floor(Date.now() / 1000)}:F>`
+                ].join('\n'),
+                color: 0x3e3e5a,
+                fields: [
+                    {
+                        name: 'Статус',
+                        value: '\`Ожидает проверки модератором\`'
                     }
-                }]
-            });
-        }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: `ID запроса: ${requestId} | ${discordTag}`
+                }
+            }]
+        });
 
         res.status(201).json({
             success: true,
@@ -115,46 +152,108 @@ app.post('/api/verification/request', async (req, res) => {
 
 app.get('/api/verification/requests', async (req, res) => {
     try {
-        // В реальности здесь запрос к базе данных
-        const mockRequests = [
-            {
-                id: 'req_1',
-                discordTag: 'test_user',
-                status: 'pending',
-                createdAt: new Date().toISOString(),
-                user: {
-                    id: '123',
-                    username: 'Test User',
-                    avatar: null
-                }
-            }
-        ];
+        const { status, user_id } = req.query;
+        
+        let queryText = 'SELECT * FROM verification_requests';
+        const queryParams = [];
+        
+        if (status && user_id) {
+            queryText += ' WHERE status = $1 AND user_id = $2 ORDER BY created_at DESC';
+            queryParams.push(status, user_id);
+        } else if (status) {
+            queryText += ' WHERE status = $1 ORDER BY created_at DESC';
+            queryParams.push(status);
+        } else if (user_id) {
+            queryText += ' WHERE user_id = $1 ORDER BY created_at DESC';
+            queryParams.push(user_id);
+        } else {
+            queryText += ' ORDER BY created_at DESC';
+        }
 
-        res.json({ requests: mockRequests });
+        const result = await query(queryText, queryParams);
+        
+        const requests = result.rows.map(row => ({
+            id: row.id,
+            discordTag: row.discord_tag,
+            status: row.status,
+            createdAt: row.created_at,
+            user: {
+                id: row.user_id,
+                username: row.username,
+                avatar: row.avatar
+            },
+            moderatorId: row.moderator_id,
+            moderatorComment: row.moderator_comment,
+            updatedAt: row.updated_at
+        }));
+
+        res.json({ requests });
     } catch (error) {
+        console.error('Error fetching verification requests:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
 
+
 app.post('/api/verification/approve/:id', async (req, res) => {
     try {
         const requestId = req.params.id;
-        const channelId = '1395295093120041114';
-        const channel = client.channels.cache.get(channelId);
+        const { moderatorId, comment } = req.body;
+        const token = req.headers.authorization?.split(' ')[1];
 
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Обновляем запрос в базе данных
+        const result = await query(
+            `UPDATE verification_requests 
+             SET status = 'approved', 
+                 moderator_id = $1, 
+                 moderator_comment = $2, 
+                 updated_at = NOW() 
+             WHERE id = $3 
+             RETURNING *`,
+            [moderatorId, comment, requestId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Request not found' });
+        }
+
+        const request = result.rows[0];
+
+        // Отправляем уведомление в Discord
+        const channel = client.channels.cache.get(VERIFICATION_LOG_CHANNEL_ID);
         if (channel) {
             await channel.send({
                 embeds: [{
-                    title: '✅ Запрос на верификацию одобрен',
-                    description: `Запрос ${requestId} был одобрен модератором`,
+                    title: 'Запрос на верификацию одобрен',
+                    description: [
+                        `**Пользователь:** <@${request.user_id}>`,
+                        `**Discord:** ${request.discord_tag}`,
+                        `**Модератор:** <@${moderatorId}>`,
+                        comment && `**Комментарий:** ${comment}`
+                    ].filter(Boolean).join('\n'),
                     color: 0x57F287,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: `ID запроса: ${requestId}`
+                    }
                 }]
             });
         }
 
-        res.json({ success: true });
+        res.json({ 
+            success: true,
+            request: {
+                id: request.id,
+                status: request.status,
+                updatedAt: request.updated_at
+            }
+        });
     } catch (error) {
+        console.error('Error approving verification request:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -162,22 +261,62 @@ app.post('/api/verification/approve/:id', async (req, res) => {
 app.post('/api/verification/reject/:id', async (req, res) => {
     try {
         const requestId = req.params.id;
-        const channelId = '1395295093120041114';
-        const channel = client.channels.cache.get(channelId);
+        const { moderatorId, comment } = req.body;
+        const token = req.headers.authorization?.split(' ')[1];
 
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Обновляем запрос в базе данных
+        const result = await query(
+            `UPDATE verification_requests 
+             SET status = 'rejected', 
+                 moderator_id = $1, 
+                 moderator_comment = $2, 
+                 updated_at = NOW() 
+             WHERE id = $3 
+             RETURNING *`,
+            [moderatorId, comment, requestId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Request not found' });
+        }
+
+        const request = result.rows[0];
+
+        // Отправляем уведомление в Discord
+        const channel = client.channels.cache.get(VERIFICATION_LOG_CHANNEL_ID);
         if (channel) {
             await channel.send({
                 embeds: [{
-                    title: '❌ Запрос на верификацию отклонен',
-                    description: `Запрос ${requestId} был отклонен модератором`,
+                    title: 'Запрос на верификацию отклонен',
+                    description: [
+                        `**Пользователь:** <@${request.user_id}>`,
+                        `**Discord:** ${request.discord_tag}`,
+                        `**Модератор:** <@${moderatorId}>`,
+                        comment && `**Причина:** ${comment}`
+                    ].filter(Boolean).join('\n'),
                     color: 0xED4245,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: `ID запроса: ${requestId}`
+                    }
                 }]
             });
         }
 
-        res.json({ success: true });
+        res.json({ 
+            success: true,
+            request: {
+                id: request.id,
+                status: request.status,
+                updatedAt: request.updated_at
+            }
+        });
     } catch (error) {
+        console.error('Error rejecting verification request:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

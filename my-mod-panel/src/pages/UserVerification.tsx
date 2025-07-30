@@ -9,35 +9,42 @@ export default function UserVerification() {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
     const [discordTag, setDiscordTag] = useState('');
-    const [requestSent, setRequestSent] = useState(false);
-    const [isPending, setIsPending] = useState(false);
+    const [requestStatus, setRequestStatus] = useState<'none' | 'pending' | 'approved' | 'rejected'>('none');
     const [error, setError] = useState('');
 
+    // Проверяем статус существующей заявки при загрузке
+    useEffect(() => {
+        if (user?.id) {
+            checkExistingRequest();
+        }
+    }, [user]);
+
+    const checkExistingRequest = async () => {
+        try {
+            const response = await fetch(`/api/verification/requests?user_id=${user?.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('discord_access_token')}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.requests.length > 0) {
+                    setRequestStatus(data.requests[0].status);
+                }
+            }
+        } catch (err) {
+            console.error('Error checking request status:', err);
+        }
+    };
+
     const handleSubmit = async () => {
-        if (!discordTag.match(/^[a-z0-9_.]{2,32}$/)) {
-            setError('Введите корректный Discord логин (например: username или user.name)');
-            return;
-        }
-
-        if (discordTag.startsWith('.') || discordTag.startsWith('_') || 
-            discordTag.endsWith('.') || discordTag.endsWith('_')) {
-            setError('Логин не может начинаться или заканчиваться на точку или подчеркивание');
-            return;
-        }
-
-        if (discordTag.includes('..')) {
-            setError('Логин не может содержать две точки подряд');
-            return;
-        }
-
-        if (discordTag.split('').every(c => c === '.')) {
-            setError('Логин не может состоять только из точек');
+        if (!validateDiscordTag(discordTag)) {
             return;
         }
 
         setError('');
-        setIsPending(true);
-
+        
         try {
             const response = await fetch('/api/verification/request', {
                 method: 'POST',
@@ -54,24 +61,39 @@ export default function UserVerification() {
             });
         
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || 'Неизвестная ошибка сервера');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Неизвестная ошибка сервера');
             }
         
-            setRequestSent(true);
+            setRequestStatus('pending');
         } catch (err) {
-            let errorMessage = 'Ошибка при отправке заявки. Попробуйте позже.';
-            
-            // Проверяем тип ошибки
-            if (err instanceof Error) {
-                errorMessage = err.message;
-            } else if (typeof err === 'string') {
-                errorMessage = err;
-            }
-        
-            setError(errorMessage);
-            setIsPending(false);
+            setError(err instanceof Error ? err.message : 'Ошибка при отправке заявки');
         }
+    };
+
+    const validateDiscordTag = (tag: string) => {
+        if (!tag.match(/^[a-z0-9_.]{2,32}$/)) {
+            setError('Введите корректный Discord логин (например: username или user.name)');
+            return false;
+        }
+
+        if (tag.startsWith('.') || tag.startsWith('_') || 
+            tag.endsWith('.') || tag.endsWith('_')) {
+            setError('Логин не может начинаться или заканчиваться на точку или подчеркивание');
+            return false;
+        }
+
+        if (tag.includes('..')) {
+            setError('Логин не может содержать две точки подряд');
+            return false;
+        }
+
+        if (tag.split('').every(c => c === '.')) {
+            setError('Логин не может состоять только из точек');
+            return false;
+        }
+
+        return true;
     };
 
     if (loading) {
@@ -100,18 +122,40 @@ export default function UserVerification() {
                     <p>После проверки модераторами вам откроются все каналы Discord</p>
                 </div>
 
-                {requestSent ? (
+                {requestStatus === 'approved' ? (
                     <motion.div
                         className="verification-success"
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                     >
                         <FiCheck className="success-icon" />
-                        <h2>Заявка отправлена!</h2>
-                        <p>Модераторы получили ваш запрос. Ожидайте решения.</p>
-                        <p>Обычно проверка занимает до 24 часов.</p>
+                        <h2>Заявка одобрена!</h2>
+                        <p>Теперь у вас есть доступ ко всем каналам сервера.</p>
+                        <button 
+                            className="return-btn"
+                            onClick={() => navigate('/')}
+                        >
+                            Вернуться на главную
+                        </button>
                     </motion.div>
-                ) : isPending ? (
+                ) : requestStatus === 'rejected' ? (
+                    <motion.div
+                        className="verification-rejected"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                    >
+                        <FiAlertCircle className="rejected-icon" />
+                        <h2>Заявка отклонена</h2>
+                        <p>Ваша заявка на верификацию была отклонена модераторами.</p>
+                        <p>Попробуйте подать заявку снова, исправив указанные замечания.</p>
+                        <button 
+                            className="retry-btn"
+                            onClick={() => setRequestStatus('none')}
+                        >
+                            Подать новую заявку
+                        </button>
+                    </motion.div>
+                ) : requestStatus === 'pending' ? (
                     <motion.div
                         className="verification-pending"
                         initial={{ y: 20, opacity: 0 }}
@@ -121,6 +165,12 @@ export default function UserVerification() {
                         <h2>Заявка на рассмотрении</h2>
                         <p>Ваша заявка проверяется модераторами.</p>
                         <p>Вы получите уведомление, когда доступ будет предоставлен.</p>
+                        <button 
+                            className="check-status-btn"
+                            onClick={checkExistingRequest}
+                        >
+                            Проверить статус
+                        </button>
                     </motion.div>
                 ) : (
                     <motion.div
@@ -136,7 +186,7 @@ export default function UserVerification() {
                             <input
                                 type="text"
                                 value={discordTag}
-                                onChange={(e) => setDiscordTag(e.target.value.toLowerCase())} // автоматически приводим к нижнему регистру
+                                onChange={(e) => setDiscordTag(e.target.value.toLowerCase())}
                                 placeholder="username"
                             />
                             <p className="hint">Укажите ваш Discord логин (только строчные буквы, цифры, точки и подчеркивания)</p>
@@ -160,10 +210,10 @@ export default function UserVerification() {
                         <button
                             className="submit-btn"
                             onClick={handleSubmit}
-                            disabled={!discordTag || isPending}
+                            disabled={!discordTag}
                         >
                             <FiSend className="btn-icon" />
-                            {isPending ? 'Отправка...' : 'Отправить заявку'}
+                            Отправить заявку
                         </button>
                     </motion.div>
                 )}

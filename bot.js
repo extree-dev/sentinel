@@ -8,7 +8,7 @@ const guildMemberAddEvent = require('./events/guildMemberAdd');
 const interactionCreate = require('./utils/interactionCreate');
 const setupVerification = require('./systems/verificationSystem');
 const { spawn } = require('child_process'); // Заменяем fork на spawn
-const { getClient } = require('./discordClient');
+const { getClient } = require('./discordClient.mjs');
 const client = getClient();
 
 const startServers = () => {
