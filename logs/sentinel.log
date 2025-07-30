@@ -7889,3 +7889,387 @@
 [2025-07-29T14:21:19.682Z] LOG: Бот и веб-сервер успешно запущены {}
 [2025-07-29T15:13:16.638Z] LOG: Завершение работы бота... {}
 [2025-07-29T15:13:16.723Z] LOG: Express server exited with code 3221225786 {}
+[2025-07-30T06:07:05.542Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T06:07:06.037Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T06:07:06.037Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T06:07:06.554Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T06:07:06.557Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T06:07:06.560Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T06:07:06.624Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T06:07:06.844Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T06:07:06.854Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T06:07:06.882Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T06:07:06.885Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T06:07:06.948Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T06:07:06.950Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T06:07:06.952Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T06:07:07.071Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T06:07:07.308Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T06:07:07.308Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T06:07:18.467Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T06:33:38.124Z] LOG: Завершение работы бота... {}
+[2025-07-30T06:33:38.300Z] LOG: Express server exited with code 3221225786 {}
+[2025-07-30T06:33:56.027Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T06:33:56.449Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T06:33:56.449Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T06:33:56.986Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T06:33:56.988Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T06:33:56.991Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T06:33:57.040Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T06:33:57.163Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T06:33:57.180Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T06:33:57.203Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T06:33:57.211Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T06:33:57.220Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T06:33:57.228Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T06:33:57.233Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T06:33:57.348Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T06:33:57.632Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T06:33:57.633Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T06:34:09.044Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T08:37:29.023Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:37:29.117Z] LOG: Express server exited with code 3221225786 {}
+[2025-07-30T08:37:48.795Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:37:49.437Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:37:49.439Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:37:50.481Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:37:50.484Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:37:50.488Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:37:50.532Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:37:50.691Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:37:50.711Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:37:50.737Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:37:50.749Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:37:50.789Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:37:50.806Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:37:50.821Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:37:51.154Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:37:51.547Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:37:51.555Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:37:55.906Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T08:37:59.737Z] LOG: Express server exited with code 1 {}
+[2025-07-30T08:39:01.050Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:39:32.185Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:39:32.788Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:39:32.788Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:39:33.437Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:39:33.439Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:39:33.443Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:39:33.454Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:39:33.538Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:39:33.562Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:39:33.577Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:39:33.591Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:39:33.599Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:39:33.604Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:39:33.616Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:39:33.884Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:39:34.127Z] LOG: Express server exited with code 1 {}
+[2025-07-30T08:39:34.134Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:39:34.135Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:39:44.271Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T08:40:32.951Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:40:36.084Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:40:36.665Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:40:36.666Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:40:37.436Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:40:37.438Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:40:37.443Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:40:37.456Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:40:37.568Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:40:37.585Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:40:37.599Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:40:37.603Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:40:37.607Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:40:37.621Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:40:37.637Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:40:37.782Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:40:38.003Z] LOG: Express server exited with code 1 {}
+[2025-07-30T08:40:38.029Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:40:38.030Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:40:49.123Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T08:41:40.368Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:41:43.348Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:41:43.891Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:41:43.892Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:41:44.742Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:41:44.747Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:41:44.753Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:41:44.766Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:41:44.890Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:41:44.907Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:44.937Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:44.943Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:41:44.957Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:44.969Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:41:44.983Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:41:45.142Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:41:45.405Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:41:45.405Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:41:49.194Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:41:50.955Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:41:50.959Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:41:50.965Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:41:50.977Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:41:51.041Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:41:51.055Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:51.098Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:51.108Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:41:51.120Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:51.130Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:41:51.137Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:41:51.269Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:41:55.607Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:41:56.287Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T08:41:57.882Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:41:57.884Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:41:57.895Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:41:57.912Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:41:58.004Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:41:58.045Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:58.072Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:58.080Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:41:58.085Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:41:58.098Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:41:58.102Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:41:58.283Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:04.422Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:05.470Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:42:05.471Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:42:05.474Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:42:05.485Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:42:05.530Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:42:05.545Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:05.563Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:05.571Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:42:05.576Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:05.579Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:42:05.582Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:42:05.648Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:08.421Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:09.570Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:42:09.572Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:42:09.575Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:42:09.585Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:42:09.626Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:42:09.642Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:09.656Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:09.661Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:42:09.665Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:09.671Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:42:09.675Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:42:09.766Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:13.261Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:14.495Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:42:14.496Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:42:14.499Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:42:14.507Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:42:14.547Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:42:14.566Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:14.576Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:14.579Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:42:14.587Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:14.589Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:42:14.594Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:42:14.667Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:14.944Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:42:14.945Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:42:17.640Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:18.834Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:42:18.836Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:42:18.840Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:42:18.852Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:42:18.947Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:42:18.959Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:19.001Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:19.014Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:42:19.053Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:19.067Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:42:19.075Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:42:19.260Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:22.738Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:25.314Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T08:42:25.320Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T08:42:25.333Z] LOG: Executing (default): SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'Warns' {}
+[2025-07-30T08:42:25.378Z] LOG: Executing (default): SELECT pk.constraint_type as "Constraint",c.column_name as "Field", c.column_default as "Default",c.is_nullable as "Null", (CASE WHEN c.udt_name = 'hstore' THEN c.udt_name ELSE c.data_type END) || (CASE WHEN c.character_maximum_length IS NOT NULL THEN '(' || c.character_maximum_length || ')' ELSE '' END) as "Type", (SELECT array_agg(e.enumlabel) FROM pg_catalog.pg_type t JOIN pg_catalog.pg_enum e ON t.oid=e.enumtypid WHERE t.typname=c.udt_name) AS "special", (SELECT pgd.description FROM pg_catalog.pg_statio_all_tables AS st INNER JOIN pg_catalog.pg_description pgd on (pgd.objoid=st.relid) WHERE c.ordinal_position=pgd.objsubid AND c.table_name=st.relname) AS "Comment" FROM information_schema.columns c LEFT JOIN (SELECT tc.table_schema, tc.table_name, cu.column_name, tc.constraint_type FROM information_schema.TABLE_CONSTRAINTS tc JOIN information_schema.KEY_COLUMN_USAGE  cu ON tc.table_schema=cu.table_schema and tc.table_name=cu.table_name and tc.constraint_name=cu.constraint_name and tc.constraint_type='PRIMARY KEY') pk ON pk.table_schema=c.table_schema AND pk.table_name=c.table_name AND pk.column_name=c.column_name WHERE c.table_name = 'Warns' AND c.table_schema = 'public' {}
+[2025-07-30T08:42:25.491Z] LOG: Executing (default): SELECT DISTINCT tc.constraint_name as constraint_name, tc.constraint_schema as constraint_schema, tc.constraint_catalog as constraint_catalog, tc.table_name as table_name,tc.table_schema as table_schema,tc.table_catalog as table_catalog,tc.initially_deferred as initially_deferred,tc.is_deferrable as is_deferrable,kcu.column_name as column_name,ccu.table_schema  AS referenced_table_schema,ccu.table_catalog  AS referenced_table_catalog,ccu.table_name  AS referenced_table_name,ccu.column_name AS referenced_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'Warns' AND tc.table_catalog = 'lewisbot' {}
+[2025-07-30T08:42:25.561Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "userId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "userId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "userId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:25.599Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "moderatorId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "moderatorId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:25.659Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "reason" DROP NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "reason" SET DEFAULT 'Не указана';ALTER TABLE "Warns" ALTER COLUMN "reason" TYPE TEXT; {}
+[2025-07-30T08:42:25.713Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "guildId" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "guildId" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "guildId" TYPE VARCHAR(255); {}
+[2025-07-30T08:42:25.786Z] LOG: Executing (default): ALTER TABLE "Warns" ALTER COLUMN "createdAt" SET NOT NULL;ALTER TABLE "Warns" ALTER COLUMN "createdAt" DROP DEFAULT;ALTER TABLE "Warns" ALTER COLUMN "createdAt" TYPE TIMESTAMP WITH TIME ZONE; {}
+[2025-07-30T08:42:25.865Z] LOG: Executing (default): SELECT i.relname AS name, ix.indisprimary AS primary, ix.indisunique AS unique, ix.indkey AS indkey, array_agg(a.attnum) as column_indexes, array_agg(a.attname) AS column_names, pg_get_indexdef(ix.indexrelid) AS definition FROM pg_class t, pg_class i, pg_index ix, pg_attribute a WHERE t.oid = ix.indrelid AND i.oid = ix.indexrelid AND a.attrelid = t.oid AND t.relkind = 'r' and t.relname = 'Warns' GROUP BY i.relname, ix.indexrelid, ix.indisprimary, ix.indisunique, ix.indkey ORDER BY i.relname; {}
+[2025-07-30T08:42:26.120Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:35.552Z] LOG: Начинаю регистрацию команд... {}
+[2025-07-30T08:42:37.392Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.367Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.387Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.387Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.407Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.455Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.452Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.464Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:37.438Z] LOG: Завершение работы бота... {}
+[2025-07-30T08:42:38.324Z] LOG: Express server exited with code 0 {}
+[2025-07-30T08:43:14.279Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:43:14.279Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:43:14.376Z] LOG: Команды зарегистрированы для гильдии 1343586237868544052 {}
+[2025-07-30T08:43:14.377Z] LOG: Успешно зарегистрировано 3 команд! {}
+[2025-07-30T08:43:15.020Z] LOG: Бот и веб-сервер успешно запущены {}
+[2025-07-30T09:13:06.298Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:15:24.910Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:18:11.739Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:18:11.742Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:18:11.743Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:23:48.785Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:23:48.788Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:23:48.790Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:26:51.895Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:26:51.898Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:26:51.899Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:28:14.182Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:28:14.185Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:28:14.187Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:28:57.785Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:28:57.788Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:28:57.790Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:29:16.895Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:29:16.898Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:29:16.900Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:29:17.086Z] LOG: Регистрация команд... {}
+[2025-07-30T09:29:17.708Z] ERROR: { message: undefined, stack: undefined, code: undefined } CONTEXT: DiscordAPIError[50035]: Invalid Form Body
+application_id[NUMBER_TYPE_COERCE]: Value "undefined" is not snowflake.
+    at handleErrors (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:748:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async SequentialHandler.runRequest (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:1149:23)
+    at async SequentialHandler.queueRequest (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:980:14)
+    at async _REST.request (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:1293:22)
+    at async registerCommands (E:\sentinel\sentinel\bot.js:64:13)
+    at async initialize (E:\sentinel\sentinel\bot.js:93:9) {
+  requestBody: {
+    files: undefined,
+    json: [
+      {
+        options: [Array],
+        name: 'report',
+        name_localizations: undefined,
+        description: 'Отправить жалобу модераторам',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      },
+      {
+        options: [Array],
+        name: 'warn',
+        name_localizations: undefined,
+        description: 'Выдать предупреждение пользователю',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      },
+      {
+        options: [Array],
+        name: 'mute',
+        name_localizations: undefined,
+        description: 'Замутить пользователя',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      }
+    ]
+  },
+  rawError: {
+    message: 'Invalid Form Body',
+    code: 50035,
+    errors: { application_id: { _errors: [Array] } }
+  },
+  code: 50035,
+  status: 400,
+  method: 'PUT',
+  url: 'https://discord.com/api/v10/applications/undefined/guilds/1343586237868544052/commands'
+}
+[2025-07-30T09:29:39.880Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:29:39.882Z] LOG: Подключение к PostgreSQL успешно установлено {}
+[2025-07-30T09:29:39.884Z] LOG: Executing (default): SELECT 1+1 AS result {}
+[2025-07-30T09:29:40.008Z] LOG: Регистрация команд... {}
+[2025-07-30T09:29:40.424Z] ERROR: { message: undefined, stack: undefined, code: undefined } CONTEXT: DiscordAPIError[50035]: Invalid Form Body
+application_id[NUMBER_TYPE_COERCE]: Value "undefined" is not snowflake.
+    at handleErrors (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:748:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async SequentialHandler.runRequest (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:1149:23)
+    at async SequentialHandler.queueRequest (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:980:14)
+    at async _REST.request (E:\sentinel\sentinel\node_modules\@discordjs\rest\dist\index.js:1293:22)
+    at async registerCommands (E:\sentinel\sentinel\bot.js:64:13)
+    at async initialize (E:\sentinel\sentinel\bot.js:93:9) {
+  requestBody: {
+    files: undefined,
+    json: [
+      {
+        options: [Array],
+        name: 'report',
+        name_localizations: undefined,
+        description: 'Отправить жалобу модераторам',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      },
+      {
+        options: [Array],
+        name: 'warn',
+        name_localizations: undefined,
+        description: 'Выдать предупреждение пользователю',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      },
+      {
+        options: [Array],
+        name: 'mute',
+        name_localizations: undefined,
+        description: 'Замутить пользователя',
+        description_localizations: undefined,
+        contexts: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        integration_types: undefined,
+        nsfw: undefined,
+        type: 1
+      }
+    ]
+  },
+  rawError: {
+    message: 'Invalid Form Body',
+    code: 50035,
+    errors: { application_id: { _errors: [Array] } }
+  },
+  code: 50035,
+  status: 400,
+  method: 'PUT',
+  url: 'https://discord.com/api/v10/applications/undefined/guilds/1343586237868544052/commands'
+}

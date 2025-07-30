@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle, FiLogOut } from 'react-icons/fi';
+import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle, FiLogOut, FiCheckCircle } from 'react-icons/fi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './css/Dashboard.css';
 import type { DiscordUser } from '../types'; // Используем type-only import
 import { useAuth } from '../hooks/useAuth';
 import { UserRoleBadge } from '../components/UserRoleBadge';
 
-type TabType = 'moderation' | 'analytics' | 'users' | 'settings';
+type TabType = 'moderation' | 'analytics' | 'users' | 'settings' | 'verification-requests';
 
 
 export default function Dashboard() {
-  const { user, loading, logout } = useAuth(); // Данные теперь берутся из хука
+  const { user, loading, logout, isAdminOrSeniorMod } = useAuth(); // Данные теперь берутся из хука
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,6 +38,7 @@ export default function Dashboard() {
         activeTab={activeTab}
         onTabChange={handleTabChange}
         onLogout={logout} // Передаем logout в Sidebar
+        isAdminOrSeniorMod={isAdminOrSeniorMod} // Передаем новое свойство
       />
 
       <main className="main-content">
@@ -81,11 +82,12 @@ export default function Dashboard() {
   );
 }
 
-const Sidebar = ({ user, activeTab, onTabChange, onLogout }: {
+const Sidebar = ({ user, activeTab, onTabChange, onLogout, isAdminOrSeniorMod }: {
   user: DiscordUser | null;
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
   onLogout: () => void;
+  isAdminOrSeniorMod: boolean;
 }) => (
   <aside className="sidebar">
     <div className="logo">
@@ -116,7 +118,16 @@ const Sidebar = ({ user, activeTab, onTabChange, onLogout }: {
       >
         Пользователи
       </NavButton>
-
+      {/* Добавляем новую кнопку только для админов и старших модераторов */}
+      {isAdminOrSeniorMod && (
+      <NavButton
+        icon={<FiCheckCircle />}
+        active={activeTab === 'verification-requests'}
+        onClick={() => onTabChange('verification-requests')}
+      >
+        <span className="nav-text-wrapper">Запросы на верификацию</span>
+      </NavButton>
+    )}
       <NavButton
         icon={<FiSettings />}
         active={activeTab === 'settings'}
@@ -146,8 +157,8 @@ const Sidebar = ({ user, activeTab, onTabChange, onLogout }: {
               onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                 const target = e.currentTarget;
                 target.src = `https://cdn.discordapp.com/embed/avatars/${user?.discriminator && user.discriminator !== "0"
-                    ? parseInt(user.discriminator) % 5
-                    : 0
+                  ? parseInt(user.discriminator) % 5
+                  : 0
                   }.png`;
               }}
             />

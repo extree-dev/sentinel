@@ -5,6 +5,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Для замены __dirname
 import dotenv from 'dotenv';
+import client from '../../../discordClient'; // Импортируем из общего файла
 
 // Создаем аналог __dirname для ES-модулей
 const __filename = fileURLToPath(import.meta.url);
@@ -35,6 +36,157 @@ const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URI } = proce
 
 // Хранилище использованных кодов (временное, для разработки)
 const usedCodes = new Set();
+
+app.post('/api/verification/request', async (req, res) => {
+    try {
+        const { discordTag, userId, username, avatar } = req.body;
+        const token = req.headers.authorization?.split(' ')[1];
+        
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        // Проверяем токен
+        const userRes = await axios.get('https://discord.com/api/users/@me', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (userRes.data.id !== userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        // Сохраняем запрос в базе (заглушка)
+        const requestId = `req_${Date.now()}`;
+        const newRequest = {
+            id: requestId,
+            discordTag,
+            userId,
+            username,
+            avatar,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+        };
+
+        if (!client.isReady()) {
+            return res.status(503).json({ error: 'Discord client not ready' });
+        }
+
+        // Отправляем уведомление в Discord
+        const channelId = '1395295093120041114';
+        const channel = client.channels.cache.get(channelId);
+        
+        if (!channel) {
+            console.error('Channel not found in cache');
+            // Попробуем получить канал через API
+            try {
+                const fetchedChannel = await client.channels.fetch(channelId);
+                if (fetchedChannel) {
+                    await fetchedChannel.send({
+                        embeds: [{
+                            // ... ваше embed сообщение ...
+                        }]
+                    });
+                }
+            } catch (fetchError) {
+                console.error('Failed to fetch channel:', fetchError);
+            }
+        } else {
+            await channel.send({
+                embeds: [{
+                    title: '📄 Новый запрос на верификацию',
+                    description: `**Пользователь:** ${username} (${discordTag})\n**ID:** ${userId}`,
+                    color: 0x5865F2,
+                    thumbnail: {
+                        url: avatar 
+                            ? `https://cdn.discordapp.com/avatars/${userId}/${avatar}.webp?size=256`
+                            : `https://cdn.discordapp.com/embed/avatars/0.png`
+                    },
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: `ID запроса: ${requestId}`
+                    }
+                }]
+            });
+        }
+
+        res.status(201).json({ 
+            success: true,
+            requestId 
+        });
+    } catch (error) {
+        console.error('Error processing verification request:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/verification/requests', async (req, res) => {
+    try {
+        // В реальности здесь запрос к базе данных
+        const mockRequests = [
+            {
+                id: 'req_1',
+                discordTag: 'test_user',
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                user: {
+                    id: '123',
+                    username: 'Test User',
+                    avatar: null
+                }
+            }
+        ];
+        
+        res.json({ requests: mockRequests });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/api/verification/approve/:id', async (req, res) => {
+    try {
+        const requestId = req.params.id;
+        const channelId = '1395295093120041114';
+        const channel = client.channels.cache.get(channelId);
+        
+        if (channel) {
+            await channel.send({
+                embeds: [{
+                    title: '✅ Запрос на верификацию одобрен',
+                    description: `Запрос ${requestId} был одобрен модератором`,
+                    color: 0x57F287,
+                    timestamp: new Date().toISOString()
+                }]
+            });
+        }
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.post('/api/verification/reject/:id', async (req, res) => {
+    try {
+        const requestId = req.params.id;
+        const channelId = '1395295093120041114';
+        const channel = client.channels.cache.get(channelId);
+        
+        if (channel) {
+            await channel.send({
+                embeds: [{
+                    title: '❌ Запрос на верификацию отклонен',
+                    description: `Запрос ${requestId} был отклонен модератором`,
+                    color: 0xED4245,
+                    timestamp: new Date().toISOString()
+                }]
+            });
+        }
+        
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.post('/api/discord/token', async (req, res) => {
     const { code } = req.body;

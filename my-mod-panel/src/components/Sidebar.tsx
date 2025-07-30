@@ -25,7 +25,7 @@ export const Sidebar = ({ user, activeTab, onTabChange }: SidebarProps) => (
         onClick={() => onTabChange('analytics')}
       >
         <FiActivity />
-        <span>Аналитика</span>
+        <span>Аналитика1</span>
       </button>
       
       <button 

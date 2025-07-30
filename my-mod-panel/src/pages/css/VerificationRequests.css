@@ -1,0 +1,285 @@
+/* Основные переменные */
+:root {
+    --vr-primary: #6d28d9;
+    --vr-primary-light: #8b5cf6;
+    --vr-success: #10b981;
+    --vr-warning: #f59e0b;
+    --vr-danger: #ef4444;
+    --vr-bg: #0f172a;
+    --vr-card-bg: #1e293b;
+    --vr-text: #f8fafc;
+    --vr-text-secondary: #94a3b8;
+    --vr-border: #334155;
+  }
+  
+  /* Основной контейнер */
+  .vr-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    color: var(--vr-text);
+  }
+  
+  /* Заголовок */
+  .vr-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .vr-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .vr-title-icon {
+    color: var(--vr-primary-light);
+    font-size: 1.5em;
+  }
+  
+  /* Фильтры */
+  .vr-filters {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  .vr-filter-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--vr-border);
+    color: var(--vr-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .vr-filter-btn:hover {
+    border-color: var(--vr-primary);
+    color: var(--vr-text);
+  }
+  
+  .vr-filter-btn.active {
+    background: var(--vr-primary);
+    border-color: var(--vr-primary);
+    color: white;
+  }
+  
+  .vr-filter-icon {
+    font-size: 1.1em;
+  }
+  
+  /* Список запросов */
+  .vr-requests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .vr-request-card {
+    background: var(--vr-card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--vr-border);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .vr-request-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .vr-status-pending {
+    border-left-color: var(--vr-warning);
+  }
+  
+  .vr-status-approved {
+    border-left-color: var(--vr-success);
+  }
+  
+  .vr-status-rejected {
+    border-left-color: var(--vr-danger);
+  }
+  
+  /* Профиль пользователя */
+  .vr-user-profile {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .vr-avatar-container {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--vr-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .vr-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .vr-default-avatar {
+    font-size: 1.75rem;
+    color: var(--vr-text-secondary);
+  }
+  
+  .vr-user-details {
+    flex-grow: 1;
+  }
+  
+  .vr-username {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .vr-discord-id {
+    margin: 0 0 0.5rem;
+    color: var(--vr-text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .vr-request-date {
+    font-size: 0.85rem;
+    color: var(--vr-text-secondary);
+    display: block;
+  }
+  
+  /* Панель действий */
+  .vr-action-panel {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  .vr-action-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .vr-approve-btn {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--vr-success);
+    border: 1px solid var(--vr-success);
+  }
+  
+  .vr-approve-btn:hover {
+    background: rgba(16, 185, 129, 0.2);
+  }
+  
+  .vr-reject-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--vr-danger);
+    border: 1px solid var(--vr-danger);
+  }
+  
+  .vr-reject-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+  }
+  
+  .vr-status-label {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .vr-approved-label {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--vr-success);
+  }
+  
+  .vr-rejected-label {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--vr-danger);
+  }
+  
+  /* Состояния */
+  .vr-empty-state {
+    background: var(--vr-card-bg);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--vr-text-secondary);
+  }
+  
+  .vr-empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--vr-text-secondary);
+    opacity: 0.5;
+  }
+  
+  .vr-loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    gap: 1rem;
+  }
+  
+  .vr-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(109, 40, 217, 0.2);
+    border-top-color: var(--vr-primary);
+    border-radius: 50%;
+    animation: vr-spin 1s linear infinite;
+  }
+
+  .verification-requests-btn {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.4;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .nav-text-wrapper {
+    display: inline-block;
+    max-width: calc(100% - 2rem); /* Оставляем место для иконки */
+  }
+  
+  @keyframes vr-spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Адаптивность */
+  @media (max-width: 768px) {
+    .vr-requests-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .vr-header {
+      flex-direction: column;
+    }
+  }
