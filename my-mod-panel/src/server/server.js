@@ -5,7 +5,11 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Для замены __dirname
 import dotenv from 'dotenv';
-import client from '../../../bot.js'
+import client from '../../../discordClient.js'
+
+client.on('ready', () => {
+    console.log(`Discord client ready! Logged in as ${client.user.tag}`);
+});
 
 // Создаем аналог __dirname для ES-модулей
 const __filename = fileURLToPath(import.meta.url);
@@ -41,7 +45,7 @@ app.post('/api/verification/request', async (req, res) => {
     try {
         const { discordTag, userId, username, avatar } = req.body;
         const token = req.headers.authorization?.split(' ')[1];
-        
+
         if (!token) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
@@ -67,10 +71,19 @@ app.post('/api/verification/request', async (req, res) => {
             createdAt: new Date().toISOString()
         };
 
+        if (!client.isReady()) { // Проверяем, готов ли клиент
+            return res.status(503).json({ error: 'Discord client is not ready yet' });
+        }
+
+
         // Отправляем уведомление в Discord
         const channelId = '1395295093120041114';
         const channel = client.channels.cache.get(channelId);
-        
+
+        if (!channel) {
+            return res.status(500).json({ error: 'Discord channel not found' });
+        }
+
         if (channel) {
             await channel.send({
                 embeds: [{
@@ -78,7 +91,7 @@ app.post('/api/verification/request', async (req, res) => {
                     description: `**Пользователь:** ${username} (${discordTag})\n**ID:** ${userId}`,
                     color: 0x5865F2,
                     thumbnail: {
-                        url: avatar 
+                        url: avatar
                             ? `https://cdn.discordapp.com/avatars/${userId}/${avatar}.webp?size=256`
                             : `https://cdn.discordapp.com/embed/avatars/0.png`
                     },
@@ -90,9 +103,9 @@ app.post('/api/verification/request', async (req, res) => {
             });
         }
 
-        res.status(201).json({ 
+        res.status(201).json({
             success: true,
-            requestId 
+            requestId
         });
     } catch (error) {
         console.error('Error processing verification request:', error);
@@ -116,7 +129,7 @@ app.get('/api/verification/requests', async (req, res) => {
                 }
             }
         ];
-        
+
         res.json({ requests: mockRequests });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
@@ -128,7 +141,7 @@ app.post('/api/verification/approve/:id', async (req, res) => {
         const requestId = req.params.id;
         const channelId = '1395295093120041114';
         const channel = client.channels.cache.get(channelId);
-        
+
         if (channel) {
             await channel.send({
                 embeds: [{
@@ -139,7 +152,7 @@ app.post('/api/verification/approve/:id', async (req, res) => {
                 }]
             });
         }
-        
+
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
@@ -151,7 +164,7 @@ app.post('/api/verification/reject/:id', async (req, res) => {
         const requestId = req.params.id;
         const channelId = '1395295093120041114';
         const channel = client.channels.cache.get(channelId);
-        
+
         if (channel) {
             await channel.send({
                 embeds: [{
@@ -162,7 +175,7 @@ app.post('/api/verification/reject/:id', async (req, res) => {
                 }]
             });
         }
-        
+
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
@@ -227,24 +240,24 @@ app.post('/api/discord/token', async (req, res) => {
 
 app.get('/api/discord/user', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
-  
+
     if (!token) {
-      console.log('No token provided');
-      return res.status(401).json({ error: 'Token required' });
+        console.log('No token provided');
+        return res.status(401).json({ error: 'Token required' });
     }
-  
+
     try {
-      // Только основные данные пользователя
-      const userRes = await axios.get('https://discord.com/api/users/@me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      res.json(userRes.data);
-      
+        // Только основные данные пользователя
+        const userRes = await axios.get('https://discord.com/api/users/@me', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        res.json(userRes.data);
+
     } catch (error) {
-      console.error('Discord API error:', error.response?.status);
-      res.status(401).json({ error: 'Invalid token' });
+        console.error('Discord API error:', error.response?.status);
+        res.status(401).json({ error: 'Invalid token' });
     }
-  });
+});
 
 app.post('/api/discord/refresh', async (req, res) => {
     const { refresh_token } = req.body;
@@ -324,12 +337,12 @@ app.get('/api/guild-roles', async (req, res) => {
                 headers: { Authorization: `Bot ${BOT_TOKEN}` }
             }
         );
-        
+
         // Фильтруем роли (убираем @everyone и сортируем по позиции)
         const roles = response.data
             .filter(role => role.id !== GUILD_ID) // Убираем @everyone
             .sort((a, b) => b.position - a.position); // Сортируем по позиции
-        
+
         res.json({ roles });
     } catch (error) {
         console.error('Discord API error:', error.response?.data || error.message);
@@ -339,14 +352,14 @@ app.get('/api/guild-roles', async (req, res) => {
 
 app.get('/api/guild-members', async (req, res) => {
     console.log('Starting /api/guild-members request');
-    
+
     try {
         // 1. Получаем участников сервера
         console.log('Fetching members from Discord API...');
         const membersResponse = await axios.get(
             `https://discord.com/api/v10/guilds/${GUILD_ID}/members?limit=1000`,
             {
-                headers: { 
+                headers: {
                     Authorization: `Bot ${BOT_TOKEN}`,
                     'Content-Type': 'application/json'
                 }
@@ -359,7 +372,7 @@ app.get('/api/guild-members', async (req, res) => {
         const rolesResponse = await axios.get(
             `https://discord.com/api/v10/guilds/${GUILD_ID}/roles`,
             {
-                headers: { 
+                headers: {
                     Authorization: `Bot ${BOT_TOKEN}`,
                     'Content-Type': 'application/json'
                 }
@@ -395,15 +408,15 @@ app.get('/api/guild-members', async (req, res) => {
                 }))
                 .sort((a, b) => b.position - a.position); // Сортировка по убыванию позиции
 
-                return {
-                    id: member.user.id,
-                    username: member.user.global_name || member.user.username,
-                    discriminator: member.user.discriminator,
-                    avatar: member.user.avatar,
-                    roles: userRoles, // Уже отсортированные роли
-                    joined_at: member.joined_at,
-                    is_bot: member.user.bot || false
-                };
+            return {
+                id: member.user.id,
+                username: member.user.global_name || member.user.username,
+                discriminator: member.user.discriminator,
+                avatar: member.user.avatar,
+                roles: userRoles, // Уже отсортированные роли
+                joined_at: member.joined_at,
+                is_bot: member.user.bot || false
+            };
         });
 
         console.log('Processed members count:', membersData.length);
@@ -426,7 +439,7 @@ app.get('/api/guild-members', async (req, res) => {
         console.error('!!! API ERROR !!!');
         console.error('Error message:', error.message);
         console.error('Stack trace:', error.stack);
-        
+
         if (error.response) {
             console.error('Response status:', error.response.status);
             console.error('Response data:', error.response.data);
@@ -440,9 +453,9 @@ app.get('/api/guild-members', async (req, res) => {
             error: 'Failed to process request',
             details: {
                 message: error.message,
-                ...(error.response && { 
+                ...(error.response && {
                     status: error.response.status,
-                    data: error.response.data 
+                    data: error.response.data
                 })
             }
         });
@@ -492,7 +505,7 @@ app.get('/api/discord/user', async (req, res) => {
 
 app.get('/api/discord/user-full', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
-    
+
     if (!token) {
         return res.status(401).json({ error: 'Token required' });
     }

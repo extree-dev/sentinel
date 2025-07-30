@@ -144,7 +144,3 @@ process.on('SIGINT', async () => {
 process.on('unhandledRejection', error => {
     logger.error('Необработанное исключение:', error);
 });
-
-module.exports = {
-    client // Экспортируем клиент для использования в других файлах
-};
