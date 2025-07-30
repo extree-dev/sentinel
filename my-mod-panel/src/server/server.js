@@ -5,7 +5,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Для замены __dirname
 import dotenv from 'dotenv';
-import client from '../../../discordClient'; // Импортируем из общего файла
+import client from '../../../discordClient'
 
 // Создаем аналог __dirname для ES-модулей
 const __filename = fileURLToPath(import.meta.url);
@@ -67,30 +67,11 @@ app.post('/api/verification/request', async (req, res) => {
             createdAt: new Date().toISOString()
         };
 
-        if (!client.isReady()) {
-            return res.status(503).json({ error: 'Discord client not ready' });
-        }
-
         // Отправляем уведомление в Discord
         const channelId = '1395295093120041114';
         const channel = client.channels.cache.get(channelId);
         
-        if (!channel) {
-            console.error('Channel not found in cache');
-            // Попробуем получить канал через API
-            try {
-                const fetchedChannel = await client.channels.fetch(channelId);
-                if (fetchedChannel) {
-                    await fetchedChannel.send({
-                        embeds: [{
-                            // ... ваше embed сообщение ...
-                        }]
-                    });
-                }
-            } catch (fetchError) {
-                console.error('Failed to fetch channel:', fetchError);
-            }
-        } else {
+        if (channel) {
             await channel.send({
                 embeds: [{
                     title: '📄 Новый запрос на верификацию',

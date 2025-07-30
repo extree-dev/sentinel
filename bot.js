@@ -1,41 +1,69 @@
 require('dotenv').config();
 const path = require('path');
-const { REST, Routes, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, REST, Routes, Events } = require('discord.js');
 const { connect } = require('./database/db');
 const fs = require('fs');
 const logger = require('./utils/logger');
 const guildMemberAddEvent = require('./events/guildMemberAdd');
 const interactionCreate = require('./utils/interactionCreate');
 const setupVerification = require('./systems/verificationSystem');
-const { spawn } = require('child_process');
-const client = require('./discordClient');
-
-// Инициализация коллекций
-client.commands = new Collection();
+const { spawn } = require('child_process'); // Заменяем fork на spawn
+const { getClient } = require('./discordClient');
+const client = getClient();
 
 const startServers = () => {
+    // 1. Запуск Express-сервера (ваш server.js)
     const expressServer = spawn('node', ['my-mod-panel/src/server/server.js'], {
         cwd: __dirname,
         stdio: 'inherit',
         shell: true,
         env: {
             ...process.env,
-            PORT: 3001,
+            PORT: 3001, // Явно указываем порт
             NODE_ENV: 'development'
         }
     });
 
+    // 2. Запуск React-приложения
     const reactApp = spawn('npm', ['run', 'dev'], {
         cwd: path.join(__dirname, 'my-mod-panel'),
         stdio: 'inherit',
         shell: true
     });
 
+    // Логирование
     expressServer.on('exit', (code) =>
         logger.log(`Express server exited with code ${code}`));
 };
 
-// Функция загрузки событий
+// Основная инициализация
+(async () => {
+    try {
+        await connect();
+        startServers(); // Заменяем startWebServer()
+
+        // Инициализация бота
+        client.commands = new Collection();
+        loadEvents();
+        loadCommands();
+        await registerCommands();
+
+        await client.login(process.env.DISCORD_TOKEN);
+        logger.log('Бот и веб-сервер успешно запущены');
+    } catch (error) {
+        logger.error('Ошибка запуска:', error);
+        process.exit(1);
+    }
+})();
+
+client.on(Events.ClientReady, setupVerification);
+
+client.on(Events.GuildMemberAdd, guildMemberAddEvent.execute);
+client.on(Events.InteractionCreate, interactionCreate.execute);
+client.commands = new Collection();
+const config = require('./utils/config');
+
+// Загрузка событий
 const loadEvents = () => {
     const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
     for (const file of eventFiles) {
@@ -44,7 +72,7 @@ const loadEvents = () => {
     }
 };
 
-// Функция загрузки команд
+// Загрузка команд
 const loadCommands = () => {
     const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
@@ -53,72 +81,59 @@ const loadCommands = () => {
     }
 };
 
-// Функция регистрации команд
 const registerCommands = async () => {
     try {
-        const commands = Array.from(client.commands.values()).map(cmd => cmd.data.toJSON());
+        const commands = [];
+        for (const [_, command] of client.commands) {
+            commands.push(command.data.toJSON());
+        }
+
         const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
-        logger.log('Регистрация команд...');
+        logger.log('Начинаю регистрацию команд...');
 
+        // Для тестирования - регистрируем только на одном сервере
         if (process.env.GUILD_ID) {
             await rest.put(
-                Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+                Routes.applicationGuildCommands(config.clientId, process.env.GUILD_ID),
                 { body: commands }
             );
             logger.log(`Команды зарегистрированы для гильдии ${process.env.GUILD_ID}`);
         } else {
             await rest.put(
-                Routes.applicationCommands(process.env.CLIENT_ID),
+                Routes.applicationCommands(config.clientId),
                 { body: commands }
             );
             logger.log('Команды зарегистрированы глобально');
         }
+
+        logger.log(`Успешно зарегистрировано ${commands.length} команд!`);
     } catch (error) {
         logger.error('Ошибка регистрации команд:', error);
-        throw error;
+        throw error; // Пробрасываем ошибку дальше
     }
 };
 
 // Основная функция инициализации
-const initialize = async () => {
+const initializeBot = async () => {
     try {
-        await connect();
-        startServers();
-        console.log('Client type:', typeof client);
-        console.log('Client prototype:', Object.getPrototypeOf(client));
-        await client.login(process.env.DISCORD_TOKEN);
 
-
+        // Загрузка обработчиков
         loadEvents();
         loadCommands();
-        await registerCommands();
 
-        // Настройка обработчиков
-        client.once('ready', () => {
-            setupVerification(client);
-            logger.log(`Бот ${client.user.tag} готов!`);
-        });
-        logger.log('Бот и серверы успешно запущены');
+        // Регистрация команд
+        await registerCommands();
     } catch (error) {
-        logger.error('Ошибка запуска:', error);
+        logger.error('Ошибка при запуске бота:', error);
         process.exit(1);
     }
 };
 
-// Обработчики завершения работы
-process.on('SIGINT', async () => {
-    logger.log('Завершение работы...');
-    await client.destroy();
-    process.exit(0);
-});
+// Запуск бота
+initializeBot();
 
-process.on('unhandledRejection', error => {
-    logger.error('Необработанное исключение:', error);
-});
-
-// Запуск приложения
-initialize();
+client.login(process.env.DISCORD_TOKEN);
 
 process.on('SIGINT', async () => {
     logger.log('Завершение работы бота...');
@@ -129,3 +144,7 @@ process.on('SIGINT', async () => {
 process.on('unhandledRejection', error => {
     logger.error('Необработанное исключение:', error);
 });
+
+module.exports = {
+    client // Экспортируем клиент для использования в других файлах
+};
