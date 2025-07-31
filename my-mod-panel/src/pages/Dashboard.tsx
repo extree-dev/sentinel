@@ -59,6 +59,11 @@ export default function Dashboard() {
                 <FiUser className="tab-icon" /> Пользователи
               </span>
             )}
+            {activeTab === 'verification-requests' && (
+              <span className="tab-title">
+                <FiCheckCircle className="tab-icon" /> Запросы на верификацию
+              </span>
+            )}
             {activeTab === 'settings' && (
               <span className="tab-title">
                 <FiSettings className="tab-icon" /> Настройки

@@ -46,7 +46,7 @@ export type DiscordGuildMember = {
     is_bot: boolean;
     isAdmin?: boolean;
     isModerator?: boolean;
-  };
+};
 
 export interface UserRole {
     id: string;
@@ -87,4 +87,22 @@ export interface VerificationUser {
     discriminator: string;
     status: 'pending' | 'approved' | 'rejected';
     registeredAt: string;
-  }
+}
+
+export interface VerificationRequest {
+    id: string;
+    discordTag: string;
+    status: 'pending' | 'approved' | 'rejected';
+    createdAt: string;
+    updatedAt?: string;
+    user: {
+        id: string;
+        username: string;
+        avatar: string | null;
+        avatarUrl: string | null; // Добавляем
+        discriminator: string;
+        roles?: DiscordRole[];
+    };
+    isModerator?: boolean;
+    moderatorComment?: string;
+}

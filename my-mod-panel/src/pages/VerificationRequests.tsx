@@ -1,23 +1,10 @@
 import { useState, useEffect } from 'react';
 import { FiCheck, FiX, FiClock, FiUser, FiAlertCircle, FiRefreshCw } from 'react-icons/fi';
 import './css/VerificationRequests.css';
-
-interface VerificationRequest {
-    id: string;
-    discordTag: string;
-    status: 'pending' | 'approved' | 'rejected';
-    createdAt: string;
-    updatedAt?: string;
-    user: {
-        id: string;
-        username: string;
-        avatar: string | null;
-    };
-    moderatorId?: string;
-    moderatorComment?: string;
-}
+import { type DiscordRole, type VerificationRequest } from '../types';
 
 export default function VerificationRequests() {
+    const MODERATOR_ROLE_ID = '1399388382492360908'; // Замените на реальный ID роли модератора
     const [requests, setRequests] = useState<VerificationRequest[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
@@ -27,20 +14,38 @@ export default function VerificationRequests() {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
+                const token = localStorage.getItem('discord_access_token');
+                if (!token) {
+                    console.error('No token found');
+                    return;
+                }
+
                 const response = await fetch('/api/discord/user-full', {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('discord_access_token')}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
-                setCurrentUser(data);
+                console.log('User data from API:', data);
+
+                // Важно: проверьте, как сервер возвращает информацию о модераторе
+                setCurrentUser({
+                    ...data,
+                    isModerator: data.roles?.some((role: DiscordRole) => role.id === MODERATOR_ROLE_ID) || false
+                });
             } catch (error) {
-                console.error('Error fetching current user:', error);
+                console.error('Failed to fetch user:', error);
             }
         };
-
         fetchCurrentUser();
-    }, []);
+        fetchRequests();
+    }, [filter]);
 
     const fetchRequests = async () => {
         try {
@@ -141,7 +146,7 @@ export default function VerificationRequests() {
                 <div className="header-content">
                     <h1 className="dashboard-title">
                         <FiUser className="title-icon" />
-                        Запросы на верификацию
+                        Управление запросами
                     </h1>
 
                     <div className="header-controls">
@@ -183,18 +188,6 @@ export default function VerificationRequests() {
                     </div>
                 </div>
             </header>
-
-            {currentUser?.isModerator && (
-                <div className="moderator-comment">
-                    <textarea
-                        className="comment-input"
-                        placeholder="Комментарий модератора (необязательно)"
-                        value={moderatorComment}
-                        onChange={(e) => setModeratorComment(e.target.value)}
-                    />
-                </div>
-            )}
-
             <main className="requests-container">
                 {filteredRequests.length === 0 ? (
                     <div className="empty-state">
@@ -204,16 +197,24 @@ export default function VerificationRequests() {
                 ) : (
                     <ul className="requests-grid">
                         {filteredRequests.map(request => (
+                            console.log('Request status:', request.status),
                             <li key={request.id} className={`request-card status-${request.status}`}>
                                 <div className="card-header">
-                                    {request.user.avatar ? (
+                                    {request.user.avatarUrl ? (
                                         <img
-                                            src={`https://cdn.discordapp.com/avatars/${request.user.id}/${request.user.avatar}.png`}
-                                            alt="User Avatar"
+                                            src={request.user.avatarUrl || `https://cdn.discordapp.com/embed/avatars/${parseInt(request.user.discriminator) % 5}.png`}
+                                            alt={`${request.user.username}'s avatar`}
                                             className="user-avatar"
+                                            onError={(e) => {
+                                                e.currentTarget.src = `https://cdn.discordapp.com/embed/avatars/${parseInt(request.user.discriminator) % 5}.png`;
+                                            }}
                                         />
                                     ) : (
-                                        <div className="avatar-placeholder">
+                                        <div
+                                            className="avatar-placeholder"
+                                            data-user-id={request.user.id}
+                                            style={{ display: request.user.avatarUrl ? 'none' : 'flex' }}
+                                        >
                                             <FiUser />
                                         </div>
                                     )}
@@ -230,7 +231,6 @@ export default function VerificationRequests() {
                                             {new Date(request.createdAt).toLocaleString()}
                                         </span>
                                     </div>
-
                                     {request.status !== 'pending' && (
                                         <div className="moderation-info">
                                             <p className="moderation-status">
@@ -242,24 +242,33 @@ export default function VerificationRequests() {
                                             )}
                                         </div>
                                     )}
+                                    {currentUser?.isModerator && (
+                                        <div className="moderator-comment">
+                                            <textarea
+                                                className="comment-input"
+                                                placeholder="Комментарий модератора (необязательно)"
+                                                value={moderatorComment}
+                                                onChange={(e) => setModeratorComment(e.target.value)}
+                                            />
+                                        </div>
+                                    )}
+                                    {request.status === 'pending' && currentUser?.isModerator && (
+                                        <div className="action-buttons">
+                                            <button
+                                                className="action-button approve"
+                                                onClick={() => handleApprove(request.id)}
+                                            >
+                                                <FiCheck /> Одобрить
+                                            </button>
+                                            <button
+                                                className="action-button reject"
+                                                onClick={() => handleReject(request.id)}
+                                            >
+                                                <FiX /> Отклонить
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
-
-                                {request.status === 'pending' && currentUser?.isModerator && (
-                                    <div className="action-buttons">
-                                        <button
-                                            className="action-button approve"
-                                            onClick={() => handleApprove(request.id)}
-                                        >
-                                            <FiCheck /> Одобрить
-                                        </button>
-                                        <button
-                                            className="action-button reject"
-                                            onClick={() => handleReject(request.id)}
-                                        >
-                                            <FiX /> Отклонить
-                                        </button>
-                                    </div>
-                                )}
                             </li>
                         ))}
                     </ul>

@@ -93,18 +93,56 @@ app.post('/api/verification/request', async (req, res) => {
         );
 
         if (existingRequest.rows.length > 0) {
-            return res.status(400).json({ 
-                error: 'У вас уже есть активный запрос на верификацию' 
+            return res.status(400).json({
+                error: 'У вас уже есть активный запрос на верификацию'
             });
         }
 
         // Создаем новый запрос в базе данных
         const requestId = `req_${Date.now()}`;
+
+        const userData = await axios.get('https://discord.com/api/users/@me', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        console.log('FULL USER DATA FROM DISCORD:', {
+            id: userData.data.id,
+            username: userData.data.username,
+            avatar: userData.data.avatar,  // Это главное поле!
+            discriminator: userData.data.discriminator,
+            global_name: userData.data.global_name
+        });
+
+        const getAvatarUrl = (userId, avatarHash, discriminator) => {
+            if (!avatarHash) {
+                // Для новых пользователей Discord (без discriminator)
+                const defaultIndex = discriminator === '0'
+                    ? parseInt(userId) % 5
+                    : parseInt(discriminator) % 5;
+                return `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
+            }
+            return `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.${avatarHash.startsWith('a_') ? 'gif' : 'webp'}?size=256`;
+        };
+
+        const avatarUrl = getAvatarUrl(
+            userRes.data.id,
+            userRes.data.avatar,  // Используем данные из Discord API
+            userRes.data.discriminator
+        );
+
+        console.log('Avatar data:', {
+            avatar: avatar,
+            userId: userId,
+            avatarUrl: avatarUrl,
+            fullUrl: `https://cdn.discordapp.com/avatars/${userId}/${avatar}.webp`
+        });
+
+
         await query(
             `INSERT INTO verification_requests 
-             (id, discord_tag, user_id, username, avatar, status, user_name) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [requestId, discordTag, userId, username, avatar, 'pending', username] // Используем username как user_name
+            (id, discord_tag, user_id, username, avatar, avatar_url, status) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            [requestId, discordTag, userId, username, avatar, avatarUrl, 'pending']
         );
 
         if (!client.isReady()) {
@@ -153,10 +191,10 @@ app.post('/api/verification/request', async (req, res) => {
 app.get('/api/verification/requests', async (req, res) => {
     try {
         const { status, user_id } = req.query;
-        
+
         let queryText = 'SELECT * FROM verification_requests';
         const queryParams = [];
-        
+
         if (status && user_id) {
             queryText += ' WHERE status = $1 AND user_id = $2 ORDER BY created_at DESC';
             queryParams.push(status, user_id);
@@ -171,7 +209,7 @@ app.get('/api/verification/requests', async (req, res) => {
         }
 
         const result = await query(queryText, queryParams);
-        
+
         const requests = result.rows.map(row => ({
             id: row.id,
             discordTag: row.discord_tag,
@@ -180,7 +218,9 @@ app.get('/api/verification/requests', async (req, res) => {
             user: {
                 id: row.user_id,
                 username: row.username,
-                avatar: row.avatar
+                avatar: row.avatar,
+                avatarUrl: row.avatar_url, // Добавляем полный URL
+                discriminator: row.discriminator || '0'
             },
             moderatorId: row.moderator_id,
             moderatorComment: row.moderator_comment,
@@ -244,7 +284,7 @@ app.post('/api/verification/approve/:id', async (req, res) => {
             });
         }
 
-        res.json({ 
+        res.json({
             success: true,
             request: {
                 id: request.id,
@@ -307,7 +347,7 @@ app.post('/api/verification/reject/:id', async (req, res) => {
             });
         }
 
-        res.json({ 
+        res.json({
             success: true,
             request: {
                 id: request.id,
@@ -409,7 +449,10 @@ app.post('/api/discord/refresh', async (req, res) => {
         client_id: DISCORD_CLIENT_ID,
         client_secret: DISCORD_CLIENT_SECRET,
         grant_type: 'refresh_token',
-        refresh_token: refresh_token
+        refresh_token: refresh_token,
+        code: code,
+        redirect_uri: DISCORD_REDIRECT_URI,
+        scope: 'identify email guilds',
     };
 
     try {
