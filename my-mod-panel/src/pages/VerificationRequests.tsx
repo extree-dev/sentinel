@@ -144,10 +144,6 @@ export default function VerificationRequests() {
         <div className="verification-dashboard">
             <header className="dashboard-header">
                 <div className="header-content">
-                    <h1 className="dashboard-title">
-                        <FiUser className="title-icon" />
-                        Управление запросами
-                    </h1>
 
                     <div className="header-controls">
                         <div className="filter-tabs">

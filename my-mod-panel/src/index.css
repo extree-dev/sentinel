@@ -1,103 +1,302 @@
+/* index.css - Modern Global Styles 2025 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Глобальные переменные с учетом новых тенденций */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* Цветовая палитра 2025 (с неоновыми акцентами и пастельными тонами) */
+  --color-primary: 88, 101, 242; /* Discord blurple */
+  --color-primary-hover: 71, 82, 196;
+  --color-secondary: 114, 137, 218;
+  --color-accent: 67, 181, 129;
+  --color-accent-neon: 0, 255, 163; /* Неоновый акцент */
+  --color-danger: 237, 66, 69;
+  --color-warning: 250, 166, 26;
+  --color-success: 59, 165, 92;
+  
+  /* Градиенты */
+  --gradient-primary: linear-gradient(135deg, rgb(var(--color-primary)), rgb(var(--color-accent)));
+  
+  /* Текст */
+  --color-text: 35, 39, 42;
+  --color-text-secondary: 114, 118, 125;
+  --color-heading: 20, 23, 26;
+  
+  /* Фоны */
+  --color-bg: 248, 249, 250;
+  --color-card-bg: 255, 255, 255;
+  --color-sidebar-bg: 30, 31, 34;
+  --color-sidebar-text: 219, 222, 225;
+  
+  /* Эффекты */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.1);
+  --glow-primary: 0 0 12px rgba(var(--color-primary), 0.3);
+  
+  /* Границы */
+  --color-border: 220, 221, 222;
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 18px;
+  
+  /* Типографика 2025 */
+  font-family: 'Inter', 'Geist', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
-
+  
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Темная тема с учетом новых тенденций */
+[data-theme="dark"] {
+  --color-text: 230, 232, 235;
+  --color-text-secondary: 163, 166, 170;
+  --color-heading: 240, 241, 242;
+  --color-bg: 30, 32, 35;
+  --color-card-bg: 22, 24, 28;
+  --color-border: 50, 53, 58;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
+  --glow-primary: 0 0 16px rgba(var(--color-primary), 0.4);
+}
+
+/* Базовые стили с плавными переходами */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #f3f4f6; /* gray-100 */
+  padding: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
-.footer {
-  background: linear-gradient(135deg, #242424 0%, #242424 100%);
-  color: white;
-  padding: 2rem 0;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+/* Современная типографика */
+h1, h2, h3, h4, h5, h6 {
+  color: rgb(var(--color-heading));
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
 }
 
-.footer .container {
-  max-width: 1200px;
-  margin: 0 auto;
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.025em;
 }
 
-.footer p {
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  color: #e2e2e2;
-  text-align: center;
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.02em;
 }
 
-/* Блок с политиками */
-.footer-policy {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+h3 {
+  font-size: 1.5rem;
 }
 
-/* Ссылки */
-.footer-policy a {
-  color: #a1a1a1;
+p {
+  margin: 0 0 1rem 0;
+  max-width: 65ch;
+}
+
+a {
+  color: rgb(var(--color-primary));
   text-decoration: none;
-  font-size: 0.85rem;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: rgb(var(--color-primary-hover));
+  text-decoration: underline;
+}
+
+/* Кнопки 2025 */
+.btn {
+  @apply px-5 py-2.5 rounded-[var(--border-radius-md)] font-medium transition-all duration-200;
+  @apply flex items-center justify-center gap-2;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-opacity-50;
   position: relative;
+  overflow: hidden;
 }
 
-.footer-policy a:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-/* Подчеркивание при наведении */
-.footer-policy a::after {
+.btn::after {
   content: '';
   position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
-  background: #4338ca;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.footer-policy a:hover::after {
-  width: 70%;
+.btn:hover::after {
+  opacity: 1;
 }
 
-/* Разные цвета для разных политик */
-.policy-privacy:hover { color: #6357e5 !important; }
-.policy-cookie:hover { color: #6357e5 !important; }
-.policy-termsuse:hover { color: #6357e5 !important; }
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary-hover;
+  box-shadow: var(--glow-primary);
+}
 
-/* Адаптивность */
+.btn-secondary {
+  @apply bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+}
+
+.btn-accent {
+  @apply bg-accent text-white hover:bg-accent/90;
+}
+
+.btn-neon {
+  @apply bg-accent-neon text-gray-900 font-bold hover:bg-accent-neon/90;
+  box-shadow: 0 0 12px rgba(var(--color-accent-neon), 0.5);
+}
+
+.btn-icon {
+  @apply p-2 rounded-full;
+}
+
+/* Карточки с современным дизайном */
+.card {
+  @apply bg-card-bg rounded-[var(--border-radius-md)] p-5 border border-border;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(8px);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-glow {
+  box-shadow: var(--glow-primary);
+}
+
+/* Современные формы */
+.input {
+  @apply px-4 py-2.5 rounded-[var(--border-radius-sm)] border border-border bg-transparent;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
+  transition: all 0.2s ease;
+}
+
+.input:disabled {
+  @apply opacity-60 cursor-not-allowed;
+}
+
+.label {
+  @apply block mb-2 text-sm font-medium text-text-secondary;
+}
+
+/* Анимации 2025 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Эффекты при наведении */
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* Утилитарные классы */
+.text-ellipsis {
+  @apply overflow-hidden text-nowrap text-ellipsis;
+}
+
+.glass-effect {
+  background: rgba(var(--color-card-bg), 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Модернизированные скроллбары */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full dark:bg-gray-600;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Адаптивные медиа-запросы */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @media (max-width: 768px) {
-  .footer-policy {
-    flex-direction: column;
-    gap: 0.5rem;
-    text-align: center;
+  :root {
+    --border-radius-md: 10px;
+    --border-radius-lg: 14px;
   }
   
-  .footer-policy a {
-    padding: 0.3rem;
+  h1 {
+    font-size: 2rem;
   }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Эффекты для фокуса (доступность) */
+*:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
 }

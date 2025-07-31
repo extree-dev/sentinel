@@ -92,7 +92,6 @@ export default function DiscordUsersPage() {
         <div className="users-section">
             <div className="section-toolbar">
                 <div className="toolbar-left">
-                    <h3>Управление пользователями</h3>
                     <div className="stats-badge">
                         <span>
                             {users.filter(u => !u.is_bot).length} {getUsersWord(users.filter(u => !u.is_bot).length)}
