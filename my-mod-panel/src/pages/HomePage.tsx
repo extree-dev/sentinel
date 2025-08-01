@@ -1,6 +1,5 @@
 import './css/HomePage.css';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Добавляем useNavigate
 
 // Определяем тип для частицы
 interface Particle {

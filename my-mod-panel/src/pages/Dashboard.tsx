@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { FiSettings, FiActivity, FiShield, FiUser, FiAlertTriangle, FiLogOut, FiCheckCircle } from 'react-icons/fi';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './css/Dashboard.css';
