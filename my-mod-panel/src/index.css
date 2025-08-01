@@ -1,7 +1,6 @@
-/* index.css - Modern Global Styles 2025 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+
+/* Ваши кастомные стили БЕЗ @apply */
 
 /* Глобальные переменные с учетом новых тенденций */
 :root {
@@ -120,11 +119,15 @@ a:hover {
 
 /* Кнопки 2025 */
 .btn {
-  @apply px-5 py-2.5 rounded-[var(--border-radius-md)] font-medium transition-all duration-200;
-  @apply flex items-center justify-center gap-2;
-  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-opacity-50;
-  position: relative;
-  overflow: hidden;
+  padding: 0.625rem 1.25rem; /* px-5 py-2.5 */
+  border-radius: var(--border-radius-md);
+  font-weight: 500; /* font-medium */
+  transition: all 0.2s ease; /* transition-all duration-200 */
+  display: flex; /* flex */
+  align-items: center; /* items-center */
+  justify-content: center; /* justify-center */
+  gap: 0.5rem; /* gap-2 */
+  /* ... */
 }
 
 .btn::after {
@@ -144,30 +147,49 @@ a:hover {
 }
 
 .btn-primary {
-  @apply bg-primary text-white hover:bg-primary-hover;
+  background-color: rgb(var(--color-primary));
+  color: white;
   box-shadow: var(--glow-primary);
 }
 
 .btn-secondary {
-  @apply bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  color: #1f2937; /* text-gray-800 */
+  &:hover {
+    background-color: #e5e7eb; /* hover:bg-gray-200 */
+  }
+  /* ... */
 }
 
 .btn-accent {
-  @apply bg-accent text-white hover:bg-accent/90;
+  background-color: rgb(var(--color-accent));
+  color: white;
+  &:hover {
+    background-color: rgb(var(--color-accent-hover));
+  }
 }
 
 .btn-neon {
-  @apply bg-accent-neon text-gray-900 font-bold hover:bg-accent-neon/90;
+  background-color: rgb(var(--color-accent-neon));
+  color: #1f2937; /* text-gray-900 */
+  font-weight: bold;
+  &:hover {
+    background-color: rgba(var(--color-accent-neon), 0.9); /* hover:bg-accent-neon/90 */
+  }
   box-shadow: 0 0 12px rgba(var(--color-accent-neon), 0.5);
 }
 
 .btn-icon {
-  @apply p-2 rounded-full;
+  padding: 0.5rem;
+  border-radius: 9999px;
 }
 
 /* Карточки с современным дизайном */
 .card {
-  @apply bg-card-bg rounded-[var(--border-radius-md)] p-5 border border-border;
+  background-color: rgb(var(--color-card-bg));
+  border-radius: var(--border-radius-md);
+  padding: 1.25rem; /* p-5 */
+  border: 1px solid rgb(var(--color-border));
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(8px);
@@ -184,17 +206,28 @@ a:hover {
 
 /* Современные формы */
 .input {
-  @apply px-4 py-2.5 rounded-[var(--border-radius-sm)] border border-border bg-transparent;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
+  padding: 0.625rem 1.25rem; /* px-4 py-2.5 */
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgb(var(--color-border));
+  background-color: transparent;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--color-primary));
+  }
   transition: all 0.2s ease;
 }
 
 .input:disabled {
-  @apply opacity-60 cursor-not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .label {
-  @apply block mb-2 text-sm font-medium text-text-secondary;
+  display: block;
+  margin-bottom: 0.5rem; /* mb-2 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  color: rgb(var(--color-text-secondary));
 }
 
 /* Анимации 2025 */
@@ -241,7 +274,9 @@ a:hover {
 
 /* Утилитарные классы */
 .text-ellipsis {
-  @apply overflow-hidden text-nowrap text-ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .glass-effect {
@@ -257,17 +292,21 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full dark:bg-gray-600;
+  background-color: #e5e7eb; /* bg-gray-300 */
+  border-radius: 9999px; /* rounded-full */
+  &:hover {
+    background-color: #d1d5db; /* hover:bg-gray-400 */
+  }
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  background-color: #d1d5db; /* hover:bg-gray-400 */
 }
 
 /* Адаптивные медиа-запросы */

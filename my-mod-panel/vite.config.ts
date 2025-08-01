@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import tailwindcss from "@tailwindcss/vite" // Используйте официальный плагин :cite[3]
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
     proxy: {
       '/api': {
@@ -13,4 +14,7 @@ export default defineConfig({
       }
     }
   },
+  css: {
+    postcss: './postcss.config.cjs' // Указываем путь к PostCSS конфигу
+  }
 });

@@ -1,4 +1,5 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { FaDiscord, FaTwitter, FaGithub } from 'react-icons/fa';
 import HomePage from './pages/HomePage';
 
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -14,6 +15,7 @@ import SettingsSection from './pages/SettingsSection';
 import UserVerification from './pages/UserVerification';
 import VerificationRequest from './pages/VerificationRequests'
 import { useTheme } from './hooks/useTheme';
+import './pages/css/Footer.css'
 import './App.css';
 
 function App() {
@@ -22,16 +24,6 @@ function App() {
     <div data-theme={theme}>
       <div className="flex flex-col min-h-screen bg-gray-100">
         {/* Шапка */}
-        <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <nav className="hidden md:block">
-              <ul className="flex space-x-6">
-                <li><Link to="/" className="hover:text-indigo-200">Главная</Link></li>
-                <li><Link to="/dashboard" className="hover:text-indigo-200">Панель</Link></li>
-              </ul>
-            </nav>
-          </div>
-        </header>
 
         {/* Основной контент */}
         <main className="flex-grow container mx-auto px-4 py-8">
@@ -69,15 +61,52 @@ function App() {
 
           </Routes>
         </main>
-
-        {/* Подвал */}
         <footer className="footer">
-          <div className="container">
-            <p>© {new Date().getFullYear()} Sentinel Mod Panel. Все права защищены.</p>
-            <div className="footer-policy">
-              <Link to="/privacy" className="policy-privacy">Политика конфиденциальности</Link>
-              <Link to="/cookies" className="policy-cookie">Политика Cookie</Link>
-              <Link to="/terms" className="policy-termsuse">Условия использования</Link>
+          <div className="footer-grid">
+            {/* Бренд и описание */}
+            <div className="footer-brand">
+              <div className="footer-logo">Sentinel</div>
+              <p className="footer-description">Модерация нового поколения для ваших Discord серверов</p>
+            </div>
+            <div className="footer-links-group">
+              <h3 className="footer-links-title">Продукт</h3>
+              <Link to="/features" className="footer-link">Функции</Link>
+              <Link to="/integrations" className="footer-link">Интеграции</Link>
+              <Link to="/roadmap" className="footer-link">Дорожная карта</Link>
+            </div>
+            <div className="footer-links-group">
+              <h3 className="footer-links-title">Документация</h3>
+              <Link
+                to="/privacy"
+                className="footer-link"
+                data-text="Конфиденциальность"
+              >
+                Конфиденциальность
+              </Link>
+              <Link
+                to="/cookies"
+                className="footer-link"
+                data-text="Cookie"
+              >
+                Cookie
+              </Link>
+              <Link
+                to="/terms"
+                className="footer-link"
+                data-text="Условия"
+              >
+                Условия
+              </Link>
+            </div>
+            <div className="footer-socials">
+              <div className="social-links">
+                <a href="#" className="social-link"><FaDiscord /></a>
+                <a href="#" className="social-link"><FaTwitter /></a>
+                <a href="#" className="social-link"><FaGithub /></a>
+              </div>
+              <div className="footer-copyright">
+                © {new Date().getFullYear()} Sentinel Mod Panel. All rights reserved.
+              </div>
             </div>
           </div>
         </footer>
