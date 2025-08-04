@@ -30,6 +30,7 @@ const generateParticles = (): Particle[] => {
 export default function HomePage() {
     // Указываем тип состояния Particle[]
     const [particles, setParticles] = useState<Particle[]>([]);
+    
 
     const handleLoginClick = () => {
         const clientId = '1394946498386722866'; // Ваш клиент ID
@@ -65,16 +66,16 @@ export default function HomePage() {
             </div>
 
             {/* Контент */}
-            <h1 className="home-title">Добро пожаловать!</h1>
+            <h1 className="home-title">Welcome!</h1>
 
             <p className="home-description">
-                Пожалуйста, войдите в свою учетную запись Discord.
+                Please log in to your Discord account.
             </p>
 
             <button className="home-button" tabIndex={0} onClick={handleLoginClick}>
                 <span className="button-text">Login with Discord</span>
                 <img
-                    src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png"
+                    src="https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/66e3d8014ea898f3a4b2156c_Symbol.svg"
                     alt="Discord Logo"
                     className="button-icon"
                 />
@@ -83,7 +84,7 @@ export default function HomePage() {
                 <svg className="privacy-icon" viewBox="0 0 24 24" width="18" height="18">
                     <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z" />
                 </svg>
-                <span className="privacy-text">Нажимая на кнопку, вы соглашаетесь с</span>
+                <span className="privacy-text">By clicking the button, you agree to</span>
                 <a
                     href="/privacy-policy"
                     className="privacy-link"
@@ -98,7 +99,7 @@ export default function HomePage() {
                     aria-label="Политика конфиденциальности"
                     data-micro-interaction="hover"
                 >
-                    <span className="link-text">Политикой конфиденциальности</span>
+                    <span className="link-text">Privacy Policy</span>
                     <svg className="external-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
                         <path d="M10 6H6v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         <path d="M18 6l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

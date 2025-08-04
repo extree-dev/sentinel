@@ -1,288 +1,188 @@
-import './css/PrivacyPolicy.css'; // Подключаем CSS
+import './css/PrivacyPolicy.css';
+
 export default function PrivacyPolicy() {
     return (
-        <div className="policy-content">
-            <h1 className="policy-content1">Политика конфиденциальности</h1>
-            <div className="policy-content2">
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">1. Общие положения</h2>
-                    <p>Настоящая политика обработки персональных данных составлена в соответствии с требованиями
-                        Федерального закона от 27.07.2006. № 152-ФЗ «О персональных данных» (далее — Закон о
-                        персональных данных) и определяет порядок обработки персональных данных и меры по обеспечению
-                        безопасности персональных данных, предпринимаемые Sentinel Discord Bot (далее — Оператор).</p>
-
-                    <p><strong>1.1.</strong> Оператор ставит своей важнейшей целью и условием осуществления своей
-                        деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных
-                        данных, в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.
-                    </p>
-
-                    <p><strong>1.2.</strong> Настоящая политика Оператора в отношении обработки персональных данных
-                        (далее — Политика) применяется ко всей информации, которую Оператор может получить о посетителях
-                        веб-сайта https://www.sentinel.ru/.</p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">2. Основные понятия, используемые в Политике</h2>
-                    <ul className="policy-list">
-                        <li><strong>Автоматизированная обработка персональных данных</strong> — обработка персональных
-                            данных с помощью средств вычислительной техники.</li>
-                        <li><strong>Блокирование персональных данных</strong> — временное прекращение обработки
-                            персональных данных (за исключением случаев, если обработка необходима для уточнения
-                            персональных данных).</li>
-                        <li><strong>Веб-сайт</strong> — совокупность графических и информационных материалов, а также
-                            программ для ЭВМ и баз данных, обеспечивающих их доступность в сети интернет по сетевому
-                            адресу https://www.sentinel.ru/.</li>
-                        <li><strong>Информационная система персональных данных</strong> — совокупность содержащихся в
-                            базах данных персональных данных и обеспечивающих их обработку информационных технологий и
-                            технических средств.</li>
-                        <li><strong>Обезличивание персональных данных</strong> — действия, в результате которых
-                            невозможно определить без использования дополнительной информации принадлежность
-                            персональных данных конкретному Пользователю или иному субъекту персональных данных.</li>
-                        <li><strong>Обработка персональных данных</strong> — любое действие (операция) или совокупность
-                            действий (операций), совершаемых с использованием средств автоматизации или без
-                            использования таких средств с персональными данными, включая сбор, запись, систематизацию,
-                            накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу
-                            (распространение, предоставление, доступ), обезличивание, блокирование, удаление,
-                            уничтожение персональных данных.</li>
-                        <li><strong>Оператор</strong> — государственный орган, муниципальный орган, юридическое или
-                            физическое лицо, самостоятельно или совместно с другими лицами организующие и/или
-                            осуществляющие обработку персональных данных, а также определяющие цели обработки
-                            персональных данных, состав персональных данных, подлежащих обработке, действия (операции),
-                            совершаемые с персональными данными.</li>
-                        <li><strong>Персональные данные</strong> — любая информация, относящаяся прямо или косвенно к
-                            определенному или определяемому Пользователю веб-сайта https://www.sentinel.ru/.</li>
-                        <li><strong>Персональные данные, разрешенные субъектом персональных данных для
-                            распространения</strong> — персональные данные, доступ неограниченного круга лиц к
-                            которым предоставлен субъектом персональных данных путем дачи согласия на обработку
-                            персональных данных, разрешенных субъектом персональных данных для распространения в
-                            порядке, предусмотренном Законом о персональных данных (далее — персональные данные,
-                            разрешенные для распространения).</li>
-                        <li><strong>Пользователь</strong> — любой посетитель веб-сайта https://www.sentinel.ru/.</li>
-                        <li><strong>Предоставление персональных данных</strong> — действия, направленные на раскрытие
-                            персональных данных определенному лицу или определенному кругу лиц.</li>
-                        <li><strong>Распространение персональных данных</strong> — любые действия, направленные на
-                            раскрытие персональных данных неопределенному кругу лиц (передача персональных данных) или
-                            на ознакомление с персональными данными неограниченного круга лиц, в том числе обнародование
-                            персональных данных в средствах массовой информации, размещение в
-                            информационно-телекоммуникационных сетях или предоставление доступа к персональным данным
-                            каким-либо иным способом.</li>
-                        <li><strong>Трансграничная передача персональных данных</strong> — передача персональных данных
-                            на территорию иностранного государства органу власти иностранного государства, иностранному
-                            физическому или иностранному юридическому лицу.</li>
-                        <li><strong>Уничтожение персональных данных</strong> — любые действия, в результате которых
-                            персональные данные уничтожаются безвозвратно с невозможностью дальнейшего восстановления
-                            содержания персональных данных в информационной системе персональных данных и/или
-                            уничтожаются материальные носители персональных данных.</li>
-                    </ul>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">3. Основные права и обязанности Оператора</h2>
-
-                    <h3 className="policy-subsection">3.1. Оператор имеет право:</h3>
-                    <ul className="policy-list">
-                        <li>получать от субъекта персональных данных достоверные информацию и/или документы, содержащие
-                            персональные данные;</li>
-                        <li>в случае отзыва субъектом персональных данных согласия на обработку персональных данных, а
-                            также, направления обращения с требованием о прекращении обработки персональных данных,
-                            Оператор вправе продолжить обработку персональных данных без согласия субъекта персональных
-                            данных при наличии оснований, указанных в Законе о персональных данных;</li>
-                        <li>самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения
-                            выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в
-                            соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о
-                            персональных данных или другими федеральными законами.</li>
-                    </ul>
-
-                    <h3 className="policy-subsection">3.2. Оператор обязан:</h3>
-                    <ul className="policy-list">
-                        <li>предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки
-                            его персональных данных;</li>
-                        <li>организовывать обработку персональных данных в порядке, установленном действующим
-                            законодательством РФ;</li>
-                        <li>отвечать на обращения и запросы субъектов персональных данных и их законных представителей в
-                            соответствии с требованиями Закона о персональных данных;</li>
-                        <li>сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу
-                            этого органа необходимую информацию в течение 10 дней с даты получения такого запроса;</li>
-                        <li>публиковать или иным образом обеспечивать неограниченный доступ к настоящей Политике в
-                            отношении обработки персональных данных;</li>
-                        <li>принимать правовые, организационные и технические меры для защиты персональных данных от
-                            неправомерного или случайного доступа к ним, уничтожения, изменения, блокирования,
-                            копирования, предоставления, распространения персональных данных, а также от иных
-                            неправомерных действий в отношении персональных данных;</li>
-                        <li>прекратить передачу (распространение, предоставление, доступ) персональных данных,
-                            прекратить обработку и уничтожить персональные данные в порядке и случаях, предусмотренных
-                            Законом о персональных данных;</li>
-                        <li>исполнять иные обязанности, предусмотренные Законом о персональных данных.</li>
-                    </ul>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">4. Основные права и обязанности субъектов персональных данных</h2>
-
-                    <h3 className="policy-subsection">4.1. Субъекты персональных данных имеют право:</h3>
-                    <ul className="policy-list">
-                        <li>получать информацию, касающуюся обработки его персональных данных, за исключением случаев,
-                            предусмотренных федеральными законами;</li>
-                        <li>требовать от оператора уточнения его персональных данных, их блокирования или уничтожения в
-                            случае, если персональные данные являются неполными, устаревшими, неточными, незаконно
-                            полученными или не являются необходимыми для заявленной цели обработки;</li>
-                        <li>выдвигать условие предварительного согласия при обработке персональных данных в целях
-                            продвижения на рынке товаров, работ и услуг;</li>
-                        <li>на отзыв согласия на обработку персональных данных, а также, на направление требования о
-                            прекращении обработки персональных данных;</li>
-                        <li>обжаловать в уполномоченный орган по защите прав субъектов персональных данных или в
-                            судебном порядке неправомерные действия или бездействие Оператора;</li>
-                        <li>на осуществление иных прав, предусмотренных законодательством РФ.</li>
-                    </ul>
-
-                    <h3 className="policy-subsection">4.2. Субъекты персональных данных обязаны:</h3>
-                    <ul className="policy-list">
-                        <li>предоставлять Оператору достоверные данные о себе;</li>
-                        <li>сообщать Оператору об уточнении (обновлении, изменении) своих персональных данных.</li>
-                    </ul>
-
-                    <p><strong>4.3.</strong> Лица, передавшие Оператору недостоверные сведения о себе, либо сведения о
-                        другом субъекте персональных данных без согласия последнего, несут ответственность в
-                        соответствии с законодательством РФ.</p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">5. Принципы обработки персональных данных</h2>
-                    <p><strong>5.1.</strong> Обработка персональных данных осуществляется на законной и справедливой
-                        основе.</p>
-                    <p><strong>5.2.</strong> Обработка персональных данных ограничивается достижением конкретных,
-                        заранее определенных и законных целей.</p>
-                    <p><strong>5.3.</strong> Не допускается объединение баз данных, содержащих персональные данные,
-                        обработка которых осуществляется в целях, несовместимых между собой.</p>
-                    <p><strong>5.4.</strong> Обработке подлежат только персональные данные, которые отвечают целям их
-                        обработки.</p>
-                    <p><strong>5.5.</strong> Содержание и объем обрабатываемых персональных данных соответствуют
-                        заявленным целям обработки.</p>
-                    <p><strong>5.6.</strong> При обработке персональных данных обеспечивается точность персональных
-                        данных, их достаточность, а в необходимых случаях и актуальность.</p>
-                    <p><strong>5.7.</strong> Хранение персональных данных осуществляется в форме, позволяющей определить
-                        субъекта персональных данных, не дольше, чем этого требуют цели обработки персональных данных.
-                    </p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">6. Цели обработки персональных данных</h2>
-                    <table className="policy-table">
-                        <tr>
-                            <th>Цель обработки</th>
-                            <td>предоставление доступа Пользователю к сервисам, информации и/или материалам,
-                                содержащимся на веб-сайте</td>
-                        </tr>
-                        <tr>
-                            <th>Персональные данные</th>
-                            <td>электронный адрес</td>
-                        </tr>
-                        <tr>
-                            <th>Правовые основания</th>
-                            <td>уставные (учредительные) документы Оператора</td>
-                        </tr>
-                        <tr>
-                            <th>Виды обработки персональных данных</th>
-                            <td>Сбор, запись, систематизация, накопление, хранение, уничтожение и обезличивание
-                                персональных данных</td>
-                        </tr>
-                    </table>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">7. Условия обработки персональных данных</h2>
-                    <p><strong>7.1.</strong> Обработка персональных данных осуществляется с согласия субъекта
-                        персональных данных на обработку его персональных данных.</p>
-                    <p><strong>7.2.</strong> Обработка персональных данных необходима для достижения целей,
-                        предусмотренных международным договором Российской Федерации или законом.</p>
-                    <p><strong>7.3.</strong> Обработка персональных данных необходима для осуществления правосудия,
-                        исполнения судебного акта.</p>
-                    <p><strong>7.4.</strong> Обработка персональных данных необходима для исполнения договора.</p>
-                    <p><strong>7.5.</strong> Обработка персональных данных необходима для осуществления прав и законных
-                        интересов оператора или третьих лиц.</p>
-                    <p><strong>7.6.</strong> Осуществляется обработка персональных данных, доступ неограниченного круга
-                        лиц к которым предоставлен субъектом персональных данных.</p>
-                    <p><strong>7.7.</strong> Осуществляется обработка персональных данных, подлежащих опубликованию или
-                        обязательному раскрытию в соответствии с федеральным законом.</p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">8. Порядок сбора, хранения, передачи и других видов обработки
-                        персональных данных</h2>
-                    <p><strong>8.1.</strong> Оператор обеспечивает сохранность персональных данных и принимает все
-                        возможные меры, исключающие доступ к персональным данным неуполномоченных лиц.</p>
-                    <p><strong>8.2.</strong> Персональные данные Пользователя никогда, ни при каких условиях не будут
-                        переданы третьим лицам, за исключением случаев, связанных с исполнением действующего
-                        законодательства либо в случае, если субъектом персональных данных дано согласие Оператору на
-                        передачу данных третьему лицу для исполнения обязательств по гражданско-правовому договору.</p>
-                    <p><strong>8.3.</strong> В случае выявления неточностей в персональных данных, Пользователь может
-                        актуализировать их самостоятельно, путем направления Оператору уведомление на адрес электронной
-                        почты Оператора devopsoff@icloud.com с пометкой «Актуализация персональных данных».</p>
-                    <p><strong>8.4.</strong> Срок обработки персональных данных определяется достижением целей, для
-                        которых были собраны персональные данные, если иной срок не предусмотрен договором или
-                        действующим законодательством.
-                        Пользователь может в любой момент отозвать свое согласие на обработку персональных данных,
-                        направив Оператору уведомление посредством электронной почты на электронный адрес Оператора
-                        devopsoff@icloud.com с пометкой «Отзыв согласия на обработку персональных данных».</p>
-                    <p><strong>8.5.</strong> Вся информация, которая собирается сторонними сервисами, в том числе
-                        платежными системами, средствами связи и другими поставщиками услуг, хранится и обрабатывается
-                        указанными лицами (Операторами) в соответствии с их Пользовательским соглашением и Политикой
-                        конфиденциальности. Субъект персональных данных и/или с указанными документами. Оператор не
-                        несет ответственность за действия третьих лиц, в том числе указанных в настоящем пункте
-                        поставщиков услуг.</p>
-                    <p><strong>8.6.</strong> Установленные субъектом персональных данных запреты на передачу (кроме
-                        предоставления доступа), а также на обработку или условия обработки (кроме получения доступа)
-                        персональных данных, разрешенных для распространения, не действуют в случаях обработки
-                        персональных данных в государственных, общественных и иных публичных интересах, определенных
-                        законодательством РФ.</p>
-                    <p><strong>8.7.</strong> Оператор при обработке персональных данных обеспечивает конфиденциальность
-                        персональных данных.</p>
-                    <p><strong>8.8.</strong> Оператор осуществляет хранение персональных данных в форме, позволяющей
-                        определить субъекта персональных данных, не дольше, чем этого требуют цели обработки
-                        персональных данных, если срок хранения персональных данных не установлен федеральным законом,
-                        договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект
-                        персональных данных.</p>
-                    <p><strong>8.9.</strong> Условием прекращения обработки персональных данных может являться
-                        достижение целей обработки персональных данных, истечение срока действия согласия субъекта
-                        персональных данных, отзыв согласия субъектом персональных данных или требование о прекращении
-                        обработки персональных данных, а также выявление неправомерной обработки персональных данных.
-                    </p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">9. Перечень действий, производимых Оператором с полученными
-                        персональными данными</h2>
-                    <p><strong>9.1.</strong>Оператор осуществляет сбор, запись, систематизацию, накопление, хранение,
-                        уточнение (обновление, изменение), извлечение, использование, передачу (распространение,
-                        предоставление, доступ), обезличивание, блокирование, удаление и уничтожение персональных
-                        данных.</p>
-                    <p><strong>9.2.</strong>Оператор осуществляет автоматизированную обработку персональных данных с
-                        получением и/или передачей полученной информации по информационно-телекоммуникационным сетям или
-                        без таковой.</p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">10. Трансграничная передача персональных данных</h2>
-                    <p><strong>10.1.</strong>Оператор до начала осуществления деятельности по трансграничной передаче
-                        персональных данных обязан уведомить уполномоченный орган по защите прав субъектов персональных
-                        данных о своем намерении осуществлять трансграничную передачу персональных данных (такое
-                        уведомление направляется отдельно от уведомления о намерении осуществлять обработку персональных
-                        данных).</p>
-                    <p><strong>10.2.</strong>Оператор до подачи вышеуказанного уведомления, обязан получить от органов
-                        власти иностранного государства, иностранных физических лиц, иностранных юридических лиц,
-                        которым планируется трансграничная передача персональных данных, соответствующие сведения.</p>
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">11. Конфиденциальность персональных данных</h2>
-                    Оператор и иные лица, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и
-                    не распространять персональные данные без согласия субъекта персональных данных, если иное не
-                    предусмотрено федеральным законом.
-                </div>
-                <div className="policy-section">
-                    <h2 className="policy-subtitle">12. Заключительные положения</h2>
-                    <p><strong>12.1.</strong> Пользователь может получить любые разъяснения по интересующим вопросам,
-                        касающимся обработки его персональных данных, обратившись к Оператору с помощью электронной
-                        почты <a className="link-privacy" href="mailto:devopsoff@icloud.com">devopsoff@icloud.com</a>.</p>
-                    <p><strong>12.2.</strong> В данном документе будут отражены любые изменения политики обработки
-                        персональных данных Оператором. Политика действует бессрочно до замены ее новой версией.</p>
-                    <p><strong>12.3.</strong> Актуальная версия Политики в свободном доступе расположена в сети Интернет
-                        по адресу <a className="link-privacy"
-                            href="https://www.sentinel.ru/privacy">https://www.sentinel.ru/privacy</a>.</p>
-                </div>
+        <div className="section-rich">
+            <div className="padding-menu"></div>
+            <div className="container780 left-vert">
+                <a href="/archive" className="archived-link is_new w-inline-block">
+                    <div className="new-link-small">Archived versions</div>
+                </a>
             </div>
-            <div className="policy-container1">
-                <a href="/" className="back-btn">Вернуться на главную</a>
+            <div className="container780 left-vert">
+                <div className="hi-wr">
+                    <h1 className="new-h1 is_new">Privacy Policy of Sentinel Discord Bot</h1>
+                </div>
+                <div className="rich-terms_new w-richtext">
+                    <h4>Effective Date: {new Date().toLocaleDateString()}</h4>
+                    <h4>Last update: {new Date().toLocaleDateString()}</h4>
+                </div>
+
+                <a href="#1" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">1. </div>
+                    <div>Welcome!</div>
+                </a>
+                <a href="#2" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">2. </div>
+                    <div>Information about the bot</div>
+                </a>
+                <a href="#3" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">3. </div>
+                    <div>Information that we collect</div>
+                </a>
+                <a href="#3" className="link-terms _30px is_new w-inline-block">
+                    <div className="menu-numbers bl">• </div>
+                    <div>Information that you provide to us</div>
+                </a>
+                <a href="#3" className="link-terms _30px is_new w-inline-block">
+                    <div className="menu-numbers bl">• </div>
+                    <div>Information that we collect automatically</div>
+                </a>
+                <a href="#4" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">4. </div>
+                    <div>How we use your information</div>
+                </a>
+                <a href="#5" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">5. </div>
+                    <div>How we disclose your data</div>
+                </a>
+                <a href="#6" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">6. </div>
+                    <div>Data storage</div>
+                </a>
+                <a href="#7" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">7. </div>
+                    <div>How we protect your information</div>
+                </a>
+                <a href="#8" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">8. </div>
+                    <div>How to monitor confidentiality</div>
+                </a>
+                <a href="#9" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">9. </div>
+                    <div>International data transmission</div>
+                </a>
+                <a href="#10" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">10. </div>
+                    <div>Services offered by third parties</div>
+                </a>
+                <a href="#11" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">11. </div>
+                    <div>Data Protection Specialist</div>
+                </a>
+                <a href="#12" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">12. </div>
+                    <div>Information about local legislation</div>
+                </a>
+                <a href="#13" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">13. </div>
+                    <div>Policy changes</div>
+                </a>
+                <a href="#14" className="link-terms is_new w-inline-block">
+                    <div className="menu-numbers">14. </div>
+                    <div>Feedback</div>
+                </a>
+
+                <div id="1" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Welcome!</h2>
+                    <p>This privacy policy explains how we collect, use, store, protect and share your personal information through our Sentinel Discord Bot.</p>
+                    <ul role="list">
+                        <li><strong>We care about your privacy</strong>. Our bot is designed to protect users' personal data.</li>
+                        <li><strong>We do not sell your personal data</strong>. Our bot is free and does not use your data for commercial purposes.</li>
+                        <li><strong>We collect the minimum necessary information</strong>. Only the data necessary for the bot to function.</li>
+                    </ul>
+                </div>
+
+                <div id="2" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Information about the bot</h2>
+                    <p>Sentinel Discord Bot is a bot for moderation and management of Discord servers. It helps administrators manage their communities, ensure security, and automate routine tasks.</p>
+                </div>
+
+                <div id="3" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Information we collect</h2>
+                    <h4>Information you provide to us</h4>
+                    <ul role="list">
+                        <li>Discord user ID</li>
+                        <li>Username and Discord tag</li>
+                        <li>Messages and commands sent to the bot</li>
+                    </ul>
+                    <h4>Information that we collect automatically</h4>
+                    <ul role="list">
+                        <li>Data on the use of bot commands</li>
+                        <li>ID of the servers where the bot is used</li>
+                        <li>Technical information about your device</li>
+                    </ul>
+                </div>
+
+                <div id="4" className="rich-guidlines-negative_new w-richtext">
+                    <h2>How we use your information</h2>
+                    <p>We use the collected data to:</p>
+                    <ul role="list">
+                        <li>Providing bot functionality</li>
+                        <li>Improvements to the bot</li>
+                        <li>Ensuring security</li>
+                        <li>Compliance with legal obligations</li>
+                    </ul>
+                </div>
+
+                <div id="5" className="rich-guidlines-negative_new w-richtext">
+                    <h2>How we disclose your data</h2>
+                    <ul role="list">
+                        <li>Only upon your request or with your consent</li>
+                        <li>To fulfill legal obligations</li>
+                        <li>To our trusted service providers</li>
+                    </ul>
+                </div>
+
+                <div id="6" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Data storage</h2>
+                    <p>We only store data for as long as it is necessary to provide bot services and fulfill legal obligations.</p>
+                </div>
+
+                <div id="7" className="rich-guidlines-negative_new w-richtext">
+                    <h2>How do we protect your information</h2>
+                    <p>We use modern encryption methods and restrict access to data only to essential employees.</p>
+                </div>
+
+                <div id="8" className="rich-guidlines-negative_new w-richtext">
+                    <h2>How to monitor confidentiality</h2>
+                    <p>You can:</p>
+                    <ul role="list">
+                        <li>Request access to your data</li>
+                        <li>Request correction or deletion of data</li>
+                        <li>Refuse to process data</li>
+                    </ul>
+                </div>
+
+                <div id="9" className="rich-guidlines-negative_new w-richtext">
+                    <h2>International data transmission</h2>
+                    <p>Data may be transferred and processed in other countries in accordance with international data protection standards.</p>
+                </div>
+
+                <div id="10" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Services offered by third parties</h2>
+                    <p>The bot can integrate with other services whose privacy policies may differ from ours.</p>
+                </div>
+
+                <div id="11" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Data Protection Specialist</h2>
+                    <p>If you have any questions about data protection, please contact us by email: <a href="mailto:devopsoff@icloud.com ">devopsoff@icloud.com </a></p>
+                </div>
+
+                <div id="12" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Information about local legislation</h2>
+                    <p>We comply with GDPR, CCPA and other data protection laws.</p>
+                </div>
+
+                <div id="13" className="rich-guidlines-negative_new w-richtext">
+                    <h2>Policy changes</h2>
+                    <p>We may update this policy. All changes will be posted on this page.</p>
+                </div>
+
+                <div id="14" className="rich-guidelines-negative_new w-richtext">
+                    <h2>Feedback</h2>
+                    <p>For any questions, please contact: <a href="mailto:devopsoff@icloud.com ">devopsoff@icloud.com </a></p>
+                </div>
             </div>
         </div>
     );

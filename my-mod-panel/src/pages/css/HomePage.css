@@ -1,3 +1,41 @@
+/* Ginto Nord */
+@font-face {
+  font-family: 'Ginto Nord';
+  src: url('../../assets/fonts/ABCGintoDiscord-Regular.woff2') format('woff2'),
+       url('/fonts/Ginto-Nord-Bold.woff') format('woff');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap; /* Чтобы текст отображался до загрузки шрифта */
+}
+
+@font-face {
+  font-family: 'Ginto Nord';
+  src: url('/fonts/Ginto-Nord-Medium.woff2') format('woff2'),
+       url('/fonts/Ginto-Nord-Medium.woff') format('woff');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
+/* gg sans */
+@font-face {
+  font-family: 'gg sans';
+  src: url('/fonts/gg-sans-regular.woff2') format('woff2'),
+       url('/fonts/gg-sans-regular.woff') format('woff');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'gg sans';
+  src: url('/fonts/gg-sans-medium.woff2') format('woff2'),
+       url('/fonts/gg-sans-medium.woff') format('woff');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
 /* HomePage.css */
 .home-container {
     all: unset;
@@ -20,17 +58,18 @@
     all: unset;
     position: absolute;
     margin: 0 !important;    /* Перебивает mx-auto */
-  padding: 0 !important;   /* Перебивает px-4 py-8 */
-  max-width: none !important; /* Отключает container */
+    padding: 0 !important;   /* Перебивает px-4 py-8 */
+    max-width: none !important; /* Отключает container */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
     background: 
+      url('https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/678e50260740f165406854fb_Feature-card.png') center/cover no-repeat,
       radial-gradient(circle at 10% 20%, rgba(var(--color-primary), 0.03) 0%, transparent 40%),
       radial-gradient(circle at 90% 80%, rgba(var(--color-accent), 0.03) 0%, transparent 40%),
-      linear-gradient(rgba(var(--color-bg), 1), rgba(var(--color-bg), 1));
+      linear-gradient(rgba(var(--color-bg), 0.8), rgba(var(--color-bg), 0.8));
     overflow: hidden;
     position: absolute;
   }
@@ -67,6 +106,7 @@
     letter-spacing: -0.025em;
     line-height: 1.1;
     animation: fadeIn 0.8s ease-out, slideUp 0.6s ease-out;
+    font-family: Ginto Nord, sans-serif;
   }
   
   .home-description {
@@ -77,77 +117,43 @@
     animation: fadeIn 1s ease-out, slideUp 0.8s ease-out;
     line-height: 1.7;
     font-weight: 400;
+    font-family: Ginto Nord, sans-serif;
   }
   
   .home-button {
-    --button-hover-glow: 0 0 15px rgba(var(--color-primary), 0.3);
-    
-    display: flex;
+    /* Твои текущие стили */
+    grid-column-gap: .25rem;
+    grid-row-gap: .25rem;
+    background-color: #E0E3FF; /* Светло-голубой/фиолетовый */
+    color: #000;
+    text-align: center;
+    letter-spacing: .25px;
+    border-radius: 1rem;
+    justify-content: flex-start;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 1.1rem 2.5rem;
-    border-radius: var(--border-radius-md);
-    background: rgb(var(--color-primary));
-    color: white;
+    margin: 1rem;
+    padding: .625rem 1rem;
+    font-size: 1rem;
     font-weight: 600;
-    font-size: 1.15rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
-    box-shadow: 
-      0 4px 12px rgba(var(--color-primary), 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.08);
-    margin-bottom: 2.5rem;
-    animation: fadeIn 1.2s ease-out, slideUp 1s ease-out;
-  }
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color 0.2s ease; /* Плавность только для фона */
+    display: flex;
+    font-family: 'Ginto Nord', sans-serif;
+    cursor: pointer; /* Добавляем указатель */
+    border: none; /* На всякий случай убираем границу */
+}
+
+.home-button:hover {
+    background-color: #C7CBFF; /* Затемненный вариант #E0E3FF */
+}
+
   
-  .home-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      120deg,
-      transparent,
-      rgba(255, 255, 255, 0.15),
-      transparent
-    );
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
-  }
-  
-  .home-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-      0 6px 20px rgba(var(--color-primary), 0.25),
-      var(--button-hover-glow);
-  }
-  
-  .home-button:hover::after {
-    transform: translateX(100%);
-  }
-  
-  .home-button:active {
-    transform: translateY(1px);
-    box-shadow: 
-      0 2px 8px rgba(var(--color-primary), 0.15),
-      var(--button-hover-glow);
-  }
   
   .button-icon {
     width: 26px;
     height: 26px;
     transition: transform 0.3s ease;
-  }
-  
-  .home-button:hover .button-icon {
-    transform: scale(1.1);
   }
   
   .privacy-consent {
@@ -157,12 +163,15 @@
     color: rgb(var(--color-text-secondary));
     font-size: 0.95rem;
     animation: fadeIn 1.4s ease-out;
-    background: rgba(var(--color-card-bg), 0.85);
     backdrop-filter: blur(8px);
     padding: 0.9rem 1.4rem;
     border-radius: 50px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(var(--color-border), 0.15);
+    font-family: Abcgintodiscord, sans-serif;
+  }
+
+  .privacy-text{
+    
+    font-family: Ginto Nord, sans-serif;
   }
   
   .privacy-icon {
@@ -178,6 +187,7 @@
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
+    font-family: Ginto Nord, sans-serif;
   }
   
   .privacy-link:hover {

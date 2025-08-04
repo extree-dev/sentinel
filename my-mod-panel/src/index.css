@@ -37,8 +37,12 @@
   /* Границы */
   --color-border: 220, 221, 222;
   --border-radius-sm: 6px;
-  --border-radius-md: 12px;
+  --border-radius-md: 20px;
   --border-radius-lg: 18px;
+
+  --brand-experiment: hsl(235 86.1% 71.8%);
+    --background-secondary-alt: hsl(220 7.7% 22.9%);
+    --text-muted: hsl(216 3.7% 73.5%);
   
   /* Типографика 2025 */
   font-family: 'Inter', 'Geist', system-ui, -apple-system, sans-serif;
@@ -79,6 +83,12 @@ body {
   overscroll-behavior-y: none;
 }
 
+footer {
+  position: relative;
+  z-index: 900; /* Меньше, чем у выпадающего списка */
+  overflow: visible; /* Или hidden, в зависимости от вашей структуры */
+}
+
 /* Современная типографика */
 h1, h2, h3, h4, h5, h6 {
   color: rgb(var(--color-heading));
@@ -92,10 +102,7 @@ h1 {
   letter-spacing: -0.025em;
 }
 
-h2 {
-  font-size: 2rem;
-  letter-spacing: -0.02em;
-}
+
 
 h3 {
   font-size: 1.5rem;
