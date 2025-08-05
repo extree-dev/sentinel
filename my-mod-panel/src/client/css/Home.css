@@ -1,0 +1,391 @@
+/* Home.css */
+
+:root {
+  /* Обновленные переменные шрифтов */
+  --font-family: Abcgintodiscord;
+  --src: url("https://cdn.prod.website-files.com/5f8dd67f8fdd6f51f0b50904/6710a8275beac7be33e0e3af_ABCGintoDiscord-Medium.woff2") format("woff2"), url("https://cdn.prod.website-files.com/6720898e13455814161526ff/6720899113455814161536fe_ABCGintoDiscord-Medium.woff2") format("woff2");
+--font-weight: 500;
+  --font-style: normal;
+  --font-display: swap;
+  
+  /* Остальные переменные... */
+}
+
+@font-face {
+  
+}
+
+/* Применение шрифтов */
+.hero-title {
+  font-family: var(--font-primary);
+  font-weight: 700; /* Poppins Bold */
+}
+
+.hero-subtitle, .feature-card p {
+  font-family: var(--font-primary);
+  font-weight: 400; /* Inter Regular */
+}
+
+.logo-primary {
+  font-family: var(--font-heading);
+  font-weight: 600; /* Poppins SemiBold */
+}
+
+.login-button {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+
+:root {
+    --primary: #5865F2;
+    --primary-dark: #4752C4;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B9BBBE;
+    --bg-dark: #1E1F22;
+    --bg-darker: #121316;
+    --glass-bg: rgba(30, 31, 34, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .home-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    color: var(--text-primary);
+  }
+  
+  .particle-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+  }
+  
+  .hero-content {
+    max-width: 800px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .main-logo {
+    font-size: 2.5rem;
+    color: var(--primary);
+  }
+  
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+  }
+  
+  .logo-primary {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  
+  .logo-sub {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-family: Abcgintodiscord, sans-serif;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(90deg, var(--primary) 0%, #00B0FF 100%);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+  
+  /* CTA Button */
+  .cta-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    z-index: 1;
+  }
+  
+  .cta-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+  }
+  
+  .cta-button .arrow-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  .button-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  
+  .cta-button.hovered .button-overlay {
+    transform: translateX(0);
+  }
+  
+  /* Feature Showcase */
+  .feature-showcase {
+    margin-top: 4rem;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .feature-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .feature-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+  
+  .feature-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active {
+    background: var(--primary);
+    transform: scale(1.2);
+  }
+  
+  /* Discord Preview */
+  .discord-preview {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 500px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1rem;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    opacity: 0.8;
+    z-index: 3;
+  }
+  
+  .server-list {
+    width: 70px;
+    background: var(--bg-dark);
+    border-right: 1px solid var(--glass-border);
+  }
+  
+  .channel-view {
+    flex: 1;
+    background: var(--bg-darker);
+  }
+
+  /* Добавьте это в Home.css */
+
+/* Стили для основной кнопки входа */
+.cta-container {
+    margin-top: 3rem;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .login-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem 3rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.4, 1);
+    box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4);
+    z-index: 1;
+  }
+  
+  .login-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(88, 101, 242, 0.6);
+  }
+  
+  .login-button:active {
+    transform: translateY(1px);
+  }
+  
+  .button-arrow {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .button-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+  
+  .login-button.hovered .button-shine {
+    left: 100%;
+  }
+  
+  /* Анимация пульсации для привлечения внимания */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .login-button {
+    animation: pulse 3s infinite;
+  }
+  
+  /* Для мобильных устройств */
+  @media (max-width: 768px) {
+    .login-button {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .discord-preview {
+      display: none;
+    }
+    
+    .hero-title {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    
+    .feature-card {
+      padding: 1.5rem;
+    }
+  }

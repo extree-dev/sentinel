@@ -1,20 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from "@tailwindcss/vite" // Используйте официальный плагин :cite[3]
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  root: path.resolve(__dirname, './'), // Корень - папка client
+  publicDir: path.resolve(__dirname, './public'),
+  plugins: [react()],
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
+    port: 5173,
+    strictPort: true,
+    open: true // Автоматически открывать браузер
   },
-  css: {
-    postcss: './postcss.config.cjs' // Указываем путь к PostCSS конфигу
-  }
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });

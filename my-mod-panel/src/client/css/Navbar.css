@@ -1,0 +1,339 @@
+/* Base Styles */
+:root {
+  --primary-color: #5865F2;
+  --primary-hover: #4752C4;
+  --text-primary: #2C2F33;
+  --text-secondary: #72767D;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F2F3F5;
+  --border-color: #E3E5E8;
+  --success-color: #3BA55C;
+  --danger-color: #ED4245;
+  --warning-color: #FAA61A;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.2s ease;
+}
+
+/* Dark Mode Variables */
+.dark {
+  --primary-color: #5865F2;
+  --primary-hover: #4752C4;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B9BBBE;
+  --bg-primary: #2F3136;
+  --bg-secondary: #36393F;
+  --border-color: #202225;
+}
+
+/* Navbar Container */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Brand/Logo Styles */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-primary {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.logo-secondary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Navigation Links */
+.navbar-nav {
+  display: flex;
+  gap: 16px;
+  margin-left: 32px;
+}
+
+.nav-link {
+  position: relative;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition);
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.nav-link.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.nav-link.active .nav-indicator {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Search Bar */
+.navbar-search {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 32px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  font-size: 14px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.3);
+}
+
+/* User Controls */
+.navbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.control-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.theme-toggle {
+  font-size: 16px;
+}
+
+.notification-btn {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: var(--danger-color);
+  color: white;
+  border-radius: 50%;
+}
+
+/* User Profile */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.user-profile:hover {
+  background-color: var(--bg-secondary);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.dropdown-icon {
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
+/* User Dropdown */
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  background-color: var(--bg-primary);
+  border-radius: 4px;
+  box-shadow: var(--shadow-md);
+  padding: 8px 0;
+  margin-top: 8px;
+  z-index: 100;
+  border: 1px solid var(--border-color);
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.dropdown-avatar {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.dropdown-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-user-info .user-name {
+  font-weight: 600;
+}
+
+.user-email {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 8px 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  text-decoration: none;
+  gap: 12px;
+  transition: var(--transition);
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+}
+
+.dropdown-item .dropdown-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.dropdown-item.logout {
+  color: var(--danger-color);
+}
+
+.dropdown-item.logout:hover {
+  background-color: rgba(237, 66, 69, 0.1);
+}

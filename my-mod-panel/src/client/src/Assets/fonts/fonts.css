@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Ginto Nord';
+    src: url('../fonts/ABCGintoDiscord-Regular.woff2') format('woff2'),
+         url('/fonts/Ginto-Nord-Bold.woff') format('woff');
+    font-weight: 700; /* Bold */
+    font-style: normal;
+    font-display: swap; /* Чтобы текст отображался до загрузки шрифта */
+  }
