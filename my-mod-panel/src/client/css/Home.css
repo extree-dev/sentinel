@@ -11,10 +11,6 @@
   /* Остальные переменные... */
 }
 
-@font-face {
-  
-}
-
 /* Применение шрифтов */
 .hero-title {
   font-family: var(--font-primary);
